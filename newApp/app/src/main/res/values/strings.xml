@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">loginScreen</string>
+    <string name="RoomCodeHint">Enter Room Code...</string>
+    <string name="classCodeHint">Enter Class Code...</string>
+    <string name="sendButtonText">Send</string>
 </resources>
