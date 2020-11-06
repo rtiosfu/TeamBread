@@ -35,6 +35,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    //TODO write a function that checks email password combo for user in database
+    //TODO populate class if email successfully logs in
+
     public void onLogin(String email){
         //TODO determine if email is associated with a TA, Prof, or Student and then fill the associated classes.
         //note that the constructors request email, password, username, userType in that order.

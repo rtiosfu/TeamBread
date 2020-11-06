@@ -7,4 +7,5 @@
     <string name="cameraButtonText">Camera</string>
     <string name="cameraFileDirTitleText">Image:</string>
     <string name="cameraSubmitText">Submit</string>
+    <string name="examEntryImageContentDesc">Image of ID Card</string>
 </resources>

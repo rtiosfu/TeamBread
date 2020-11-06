@@ -14,6 +14,7 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.loginscreen.roomcode.enterRoomCode;
 import com.example.loginscreen.R;
@@ -43,9 +44,8 @@ public class examEntry extends AppCompatActivity {
 //
 //    }
 
+    //sends the signal to take the photo with default camera app
     public void dispatchTakePictureIntent(View view) {
-        TextView test = (TextView)findViewById(R.id.preExamScanMessage);
-        test.setText("This function has ran.");
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
             // Create the File where the photo should go
@@ -64,7 +64,7 @@ public class examEntry extends AppCompatActivity {
                 try {
                     startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
                 }catch(ActivityNotFoundException e){
-                    test.setText("Activity not found exception.");
+                    Toast.makeText(getApplicationContext(), "Error opening camera. Please try again.", Toast.LENGTH_SHORT).show();
                 }
 //                setImage();
             }
