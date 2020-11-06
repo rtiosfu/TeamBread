@@ -1,4 +1,6 @@
-package com.example.loginscreen.roomcode;
+package com.example.loginscreen.roomcode.User;
+
+import com.example.loginscreen.roomcode.User.userType;
 
 import java.util.ArrayList;
 

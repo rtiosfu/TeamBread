@@ -1,6 +1,4 @@
-package com.example.loginscreen.roomcode;
-
-import java.util.ArrayList;
+package com.example.loginscreen.roomcode.User;
 
 public abstract class User {
 
@@ -14,7 +12,7 @@ public abstract class User {
     public boolean canCreateCourses;
     public boolean canCreateExams;
 
-};
+}
 
 enum userType{
     STUDENT,

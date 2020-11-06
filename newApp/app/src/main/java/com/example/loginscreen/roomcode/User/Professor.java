@@ -1,8 +1,10 @@
-package com.example.loginscreen.roomcode;
+package com.example.loginscreen.roomcode.User;
+
+import com.example.loginscreen.roomcode.User.userType;
 
 import java.util.ArrayList;
 
-public class Professor extends User{
+public class Professor extends User {
 
     public ArrayList<String> ownedClasses;
     public ArrayList<String> ownedRooms;
