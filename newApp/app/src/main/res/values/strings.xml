@@ -3,4 +3,8 @@
     <string name="RoomCodeHint">Enter Room Code...</string>
     <string name="classCodeHint">Enter Class Code...</string>
     <string name="sendButtonText">Send</string>
+    <string name="preExamScanRequest">Please submit a picture of your SFU ID to enter.</string>
+    <string name="cameraButtonText">Camera</string>
+    <string name="cameraFileDirTitleText">Image:</string>
+    <string name="cameraSubmitText">Submit</string>
 </resources>
