@@ -26,6 +26,4 @@ public class enterRoomCode extends AppCompatActivity {
         testString.setText(uEmail + email);
     }
 
-
-
 }

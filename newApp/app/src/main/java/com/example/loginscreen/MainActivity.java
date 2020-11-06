@@ -1,7 +1,7 @@
 package com.example.loginscreen;
 
 import androidx.appcompat.app.AppCompatActivity;
-
+import com.example.loginscreen.roomcode.User;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -30,10 +30,14 @@ public class MainActivity extends AppCompatActivity {
         closeButton = (Button)findViewById(R.id.closebutton);
         email = (EditText) findViewById(R.id.email);
         password = (EditText)findViewById(R.id.password);
-        incorrectAttempts = (TextView)findViewById(R.id.loginbutton);
+        incorrectAttempts = (TextView)findViewById(R.id.incorrectAttempts);
 
     }
 
+    public void onLogin(String email){
+        //TODO determine if email is associated with a TA, Prof, or Student and then fill the associated classes.
+        //note that the constructors request email, password, username, userType in that order.
+    }
 
 
     public void onLoginClick(View view){
