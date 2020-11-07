@@ -10,11 +10,11 @@ public class Professor extends User {
     public ArrayList<String> ownedRooms;
     public ArrayList<String> TAs;
 
-    public Professor(String mail, String pWord, String uName, userType uType){
+    public Professor(String mail, String fName, String lName, userType uType, String idNum){
         email = mail;
-        password = pWord;
-        username = uName;
+        username = fName + lName;
         type = uType;
+        ID = idNum;
         currentRoom = "NONE";
         receivesUpdates = true;
         canViewInfo = true;

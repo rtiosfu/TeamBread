@@ -8,11 +8,11 @@ public class TA extends User {
 
     public ArrayList<String> classes;
 
-    public TA(String mail, String pWord, String uName, userType uType){
+    public TA(String mail, String fName, String lName, userType uType, String idNum){
         email = mail;
-        password = pWord;
-        username = uName;
+        username = fName + lName;
         type = uType;
+        ID = idNum;
         currentRoom = "NONE";
         receivesUpdates = true;
         canViewInfo = true;
