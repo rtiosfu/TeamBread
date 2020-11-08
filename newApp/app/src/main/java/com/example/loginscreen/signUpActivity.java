@@ -2,6 +2,7 @@ package com.example.loginscreen;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
@@ -58,6 +59,7 @@ public class signUpActivity extends AppCompatActivity {
         }
     }
 
+    User user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -167,9 +169,9 @@ public class signUpActivity extends AppCompatActivity {
     public void submitClick(View view){
         if(canSubmit()){
             //create user
-            User user = new User(email.getText().toString(), fname.getText().toString(),
-                                lname.getText().toString(), retUserType(),
-                                id.getText().toString());
+            User user = new User(email.getText().toString().trim(), fname.getText().toString().trim(),
+                                lname.getText().toString().trim(), retUserType(),
+                                id.getText().toString().trim());
             //write user to database
             writeToDatabase(user);
         }else{

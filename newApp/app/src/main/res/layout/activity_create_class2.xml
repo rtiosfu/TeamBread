@@ -59,6 +59,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginLeft="24dp"
         android:layout_marginTop="24dp"
+        android:onClick="onCreateClick"
         android:text="@string/createClassroomCreateButton"
         app:layout_constraintStart_toEndOf="@+id/createClassroomNameEntry"
         app:layout_constraintTop_toBottomOf="@+id/createClassroomTitle" />
