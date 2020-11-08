@@ -11,6 +11,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.xmlbeans.UserType;
@@ -20,6 +23,7 @@ import com.example.loginscreen.roomcode.Room.*;
 import com.example.loginscreen.roomcode.enterRoomCode;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -52,80 +56,75 @@ public class MainActivity extends AppCompatActivity {
     //if login succeeds, returns an associated class of either Professor, TA, or Student.
     ArrayList<String> checkLogin(String email, String password) {
 //        ArrayList<String> stub = new ArrayList<String>;
-        String filepath = "/storage/Download/TestData.xlsx";
-        XSSFWorkbook workbook = null;
-        XSSFSheet sheet = null;
+        InputStream fStream = getResources().openRawResource(R.raw.testdataoldver);
+        HSSFWorkbook workbook = null;
+        HSSFSheet sheet = null;
         try {
-            workbook = new HSSFWorkbook(filepath);
-            sheet = workbook.getSheet("Sheet1");
+            workbook = new HSSFWorkbook(fStream);
+            sheet = workbook.getSheetAt(0);
         } catch (IOException e) {
             Toast.makeText(getApplicationContext(), "Error opening database. Please try again.", Toast.LENGTH_SHORT).show();
             System.out.println(e.getCause());
             System.out.println(e.getMessage());
             e.printStackTrace();
-//        }
+        }
 //
 //        //Load in the excel file, hardcoded at the moment
 //        //col 0 = firstname, col 1 = lastname, col 2 = Student #, col 3 = email, col 4 = type, col 5 = password
-//        int rows = sheet.getPhysicalNumberOfRows();
-//        for (int i = 1; i < rows; ++i){
-//                //This long conditional is basically just checking if the email and password match on the particular row.
-//            if(sheet.getRow(i).getCell(3).getStringCellValue() == email){
-//                if( sheet.getRow(i).getCell(5).getStringCellValue() == password){
-//                    //TODO make the array list for the user class. Login succeeded.
-//                    String type = sheet.getRow(i).getCell(4).getStringCellValue();
-//
-//                    switch(type){
-//                        case "STUDENT":
-//                            ArrayList<String> sInfo = new ArrayList<String>();
-//                            //add email
-//                            sInfo.add(sheet.getRow(i).getCell(3).getStringCellValue());
-//                            //add firstname and lastname
-//                            sInfo.add(sheet.getRow(i).getCell(0).getStringCellValue());
-//                            sInfo.add(sheet.getRow(i).getCell(1).getStringCellValue());
-//                            //add usertype
-//                            sInfo.add("STUDENT");
-//                            //add ID
-//                            sInfo.add(sheet.getRow(i).getCell(2).getStringCellValue());
-//                            return sInfo;
-//
-//                        case "PROFESSOR":
-//
-//                            ArrayList<String> pInfo = new ArrayList<String>();
-//                            //add email
-//                            pInfo.add(sheet.getRow(i).getCell(3).getStringCellValue());
-//                            //add firstname and lastname
-//                            pInfo.add(sheet.getRow(i).getCell(0).getStringCellValue());
-//                            pInfo.add(sheet.getRow(i).getCell(1).getStringCellValue());
-//                            //add usertype
-//                            pInfo.add("PROFESSOR");
-//                            //add ID
-//                            pInfo.add(sheet.getRow(i).getCell(2).getStringCellValue());
-//                            return pInfo;
-//
-//                        case "TA":
-//                            ArrayList<String> tInfo = new ArrayList<String>();
-//                            //add email
-//                            tInfo.add(sheet.getRow(i).getCell(3).getStringCellValue());
-//                            //add firstname and lastname
-//                            tInfo.add(sheet.getRow(i).getCell(0).getStringCellValue());
-//                            tInfo.add(sheet.getRow(i).getCell(1).getStringCellValue());
-//                            //add usertype
-//                            tInfo.add("TA");
-//                            //add ID
-//                            tInfo.add(sheet.getRow(i).getCell(2).getStringCellValue());
-//                            return tInfo;
-//
-//                        default:
-//                            return null;
-//                    }
-//                }else{
-//                    return null;
-//                }
-//                //want to populate a User class with the data if the login is successful.
-//            }
+        int rows = sheet.getPhysicalNumberOfRows();
+        for (int i = 1; i < rows; ++i){
+                //This long conditional is basically just checking if the email and password match on the particular row.
+            if(sheet.getRow(i).getCell(3).getStringCellValue().equals(email)){
+                if( sheet.getRow(i).getCell(5).getStringCellValue().equals(password)){
+                    String type = sheet.getRow(i).getCell(4).getStringCellValue();
+                    switch(type){
+                        case "STUDENT":
+                            ArrayList<String> sInfo = new ArrayList<String>();
+                            //add email
+                            sInfo.add(sheet.getRow(i).getCell(3).getStringCellValue());
+                            //add firstname and lastname
+                            sInfo.add(sheet.getRow(i).getCell(0).getStringCellValue());
+                            sInfo.add(sheet.getRow(i).getCell(1).getStringCellValue());
+                            //add usertype
+                            sInfo.add("STUDENT");
+                            //add ID
+                            sInfo.add(String.format("%.0f", sheet.getRow(i).getCell(2).getNumericCellValue()));
+                            return sInfo;
+
+                        case "PROFESSOR":
+
+                            ArrayList<String> pInfo = new ArrayList<String>();
+                            //add email
+                            pInfo.add(sheet.getRow(i).getCell(3).getStringCellValue());
+                            //add firstname and lastname
+                            pInfo.add(sheet.getRow(i).getCell(0).getStringCellValue());
+                            pInfo.add(sheet.getRow(i).getCell(1).getStringCellValue());
+                            //add usertype
+                            pInfo.add("PROFESSOR");
+                            //add ID
+                            pInfo.add(String.format("%.0f", sheet.getRow(i).getCell(2).getNumericCellValue()));
+                            return pInfo;
+
+                        case "TA":
+                            ArrayList<String> tInfo = new ArrayList<String>();
+                            //add email
+                            tInfo.add(sheet.getRow(i).getCell(3).getStringCellValue());
+                            //add firstname and lastname
+                            tInfo.add(sheet.getRow(i).getCell(0).getStringCellValue());
+                            tInfo.add(sheet.getRow(i).getCell(1).getStringCellValue());
+                            //add usertype
+                            tInfo.add("TA");
+                            //add ID
+                            tInfo.add(String.format("%.0f", sheet.getRow(i).getCell(2).getNumericCellValue()));
+                            return tInfo;
+                    }
+                }
+
+
+                //want to populate a User class with the data if the login is successful.
+            }
         }
-            //reached the end of the database without finding a matching email.
+//            reached the end of the database without finding a matching email.
             return null;
 //        }
     }
@@ -147,10 +146,9 @@ public class MainActivity extends AppCompatActivity {
             return; // do not count this as an incorrect login attempt
         }
         ArrayList<String> userLogin = checkLogin(emailView.getText().toString(), passwordView.getText().toString());
-        // TODO check if email + password combo matches a User in the database
         if (userLogin != null) {
             User user = new User();
-            //Note, the return order will always be email, fname, lname, type, idnum
+//            Note, the return order will always be email, fname, lname, type, idnum
             switch(userLogin.get(3)){
                 case "STUDENT":
                     user = new User(userLogin.get(0), userLogin.get(1), userLogin.get(2), userType.STUDENT, userLogin.get(4));

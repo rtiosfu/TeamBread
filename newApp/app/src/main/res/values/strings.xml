@@ -8,4 +8,12 @@
     <string name="cameraFileDirTitleText">Image:</string>
     <string name="cameraSubmitText">Submit</string>
     <string name="examEntryImageContentDesc">Image of ID Card</string>
+    <string name="mainLoginTextButtonText">Login</string>
+    <string name="mainTitleText">ProProct</string>
+    <string name="mainEmailTextHint">Email</string>
+    <string name="mainPasswordTextHint">Password</string>
+    <string name="mainAttemptsLeftText">Attempts Left:</string>
+    <string name="mainLoginButton">Login</string>
+    <string name="mainCloseButton">Close</string>
+    <string name="mainSignUpButton">Sign Up</string>
 </resources>

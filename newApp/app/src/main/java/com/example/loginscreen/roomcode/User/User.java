@@ -13,6 +13,7 @@ public class User implements Parcelable {
     public userType type;
     public String currentRoom;
     public boolean receivesUpdates;
+    //can they view exam info
     public boolean canViewInfo;
     public boolean canCreateCourses;
     public boolean canCreateExams;
@@ -47,8 +48,10 @@ public class User implements Parcelable {
     }
 
     public void writeToParcelHelper(Parcel out, int flags, ArrayList<String> arr){
-        for(int i = 0; i < arr.size(); i++){
-            out.writeString(arr.get(i));
+        if(arr != null) {
+            for (int i = 0; i < arr.size(); i++) {
+                out.writeString(arr.get(i));
+            }
         }
     }
 
@@ -56,7 +59,7 @@ public class User implements Parcelable {
         out.writeString(email);
         out.writeString(username);
         out.writeString(ID);
-        out.writeString(this.type.name());
+        out.writeInt(type.ordinal());
         out.writeString(currentRoom);
         out.writeInt(receivesUpdates ? 1 : 0);
         out.writeInt(canViewInfo ? 1 : 0);
@@ -64,6 +67,7 @@ public class User implements Parcelable {
         out.writeInt(canCreateExams ? 1 : 0);
         writeToParcelHelper(out, flags, classes);
         writeToParcelHelper(out, flags, exams);
+        out.writeString(loc);
     }
 
     public static final Parcelable.Creator<User> CREATOR
@@ -78,24 +82,35 @@ public class User implements Parcelable {
     };
 
     void readParcelHelper(Parcel in, ArrayList<String> arr){
-        for(int i = 0; i < arr.size(); i++){
-            arr.add(in.readString());
+        if(arr != null) {
+            for (int i = 0; i < arr.size(); i++) {
+                arr.add(in.readString());
+            }
+        }else{
+            arr = null;
         }
     }
     private User(Parcel in) {
-        classes.clear();
-        exams.clear();
+
         email = in.readString();
         username = in.readString();
         ID = in.readString();
-        this.type = userType.valueOf(in.readString());
+        type = userType.values()[in.readInt()];
         currentRoom = in.readString();
         receivesUpdates = in.readInt() == 1;
         canViewInfo = in.readInt() == 1;
         canCreateCourses = in.readInt() == 1;
         canCreateExams = in.readInt() == 1;
-        readParcelHelper(in, classes);
-        readParcelHelper(in, exams);
+        if(classes != null){
+            classes.clear();
+            readParcelHelper(in, classes);
+        }
+        if(exams != null){
+            exams.clear();
+            readParcelHelper(in, exams);
+        }
+        loc = in.readString();
+
     }
 
 }
