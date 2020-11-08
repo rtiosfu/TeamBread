@@ -29,7 +29,7 @@ public class User implements Parcelable {
 
     public User(String mail, String fName, String lName, userType uType, String idNum){
         email = mail;
-        username = fName + lName;
+        username = fName + " " + lName;
         type = uType;
         ID = idNum;
         currentRoom = "NONE";

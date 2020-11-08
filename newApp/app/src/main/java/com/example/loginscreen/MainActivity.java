@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Parcel;
 import android.os.Parcelable;
+import android.renderscript.ScriptGroup;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,8 +22,11 @@ import org.apache.xmlbeans.UserType;
 
 import com.example.loginscreen.roomcode.User.*;
 import com.example.loginscreen.roomcode.Room.*;
-import com.example.loginscreen.roomcode.enterRoomCode;
+import com.example.loginscreen.roomcode.*;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -45,7 +50,45 @@ public class MainActivity extends AppCompatActivity {
         emailView = (EditText) findViewById(R.id.email);
         passwordView = (EditText)findViewById(R.id.password);
         incorrectAttempts = (TextView)findViewById(R.id.incorrectAttempts);
+        incorrectAttempts.setText(Integer.toString(attemptsLeft));
 
+    }
+
+    public void makeDirs(String name){
+        File file = new File(getExternalFilesDir(null) + "/" +  name);
+        if(!file.exists()){
+            file.mkdirs();
+        }
+    }
+
+    public void createDB(){
+//        System.out.println("Copying");
+        InputStream fStream = getResources().openRawResource(R.raw.testdataoldver);
+        File file = new File(getExternalFilesDir(null) + "/testdataoldver.xls");
+        makeDirs("classes");
+        makeDirs("exams");
+        makeDirs("professors");
+        makeDirs("students");
+        //only copy if the file does not already exist
+        if(!(file.exists())) {
+            System.out.println(getExternalFilesDir(null));
+            try {
+                FileOutputStream stream = new FileOutputStream(file);
+                byte[] buff = new byte[1024];
+                int read = 0;
+                while ((read = fStream.read(buff)) > 0) {
+                    stream.write(buff, 0, read);
+                }
+                stream.close();
+                fStream.close();
+                FileInputStream test = new FileInputStream(new File(getExternalFilesDir(null) + "/testdataoldver.xls"));
+                System.out.println("Got here");
+            } catch (IOException e) {
+                System.out.println(e.getCause());
+                System.out.println(e.getMessage());
+                e.printStackTrace();
+            }
+        }
     }
 
     //TODO write a function that checks email password combo for user in database
@@ -56,12 +99,16 @@ public class MainActivity extends AppCompatActivity {
     //if login succeeds, returns an associated class of either Professor, TA, or Student.
     ArrayList<String> checkLogin(String email, String password) {
 //        ArrayList<String> stub = new ArrayList<String>;
-        InputStream fStream = getResources().openRawResource(R.raw.testdataoldver);
+
+        //Set up the workbook for the excel file
         HSSFWorkbook workbook = null;
         HSSFSheet sheet = null;
         try {
+            File file = new File(getExternalFilesDir(null) + "/testdataoldver.xls");
+            FileInputStream fStream = new FileInputStream(file);
             workbook = new HSSFWorkbook(fStream);
             sheet = workbook.getSheetAt(0);
+            fStream.close();
         } catch (IOException e) {
             Toast.makeText(getApplicationContext(), "Error opening database. Please try again.", Toast.LENGTH_SHORT).show();
             System.out.println(e.getCause());
@@ -77,6 +124,7 @@ public class MainActivity extends AppCompatActivity {
             if(sheet.getRow(i).getCell(3).getStringCellValue().equals(email)){
                 if( sheet.getRow(i).getCell(5).getStringCellValue().equals(password)){
                     String type = sheet.getRow(i).getCell(4).getStringCellValue();
+                    //populate the array list with the needed information, refer to the col numbers for what they actually are.
                     switch(type){
                         case "STUDENT":
                             ArrayList<String> sInfo = new ArrayList<String>();
@@ -87,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
                             sInfo.add(sheet.getRow(i).getCell(1).getStringCellValue());
                             //add usertype
                             sInfo.add("STUDENT");
-                            //add ID
+                            //add ID (and remove scientific format)
                             sInfo.add(String.format("%.0f", sheet.getRow(i).getCell(2).getNumericCellValue()));
                             return sInfo;
 
@@ -101,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
                             pInfo.add(sheet.getRow(i).getCell(1).getStringCellValue());
                             //add usertype
                             pInfo.add("PROFESSOR");
-                            //add ID
+                            //add ID (and remove scientific format)
                             pInfo.add(String.format("%.0f", sheet.getRow(i).getCell(2).getNumericCellValue()));
                             return pInfo;
 
@@ -114,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
                             tInfo.add(sheet.getRow(i).getCell(1).getStringCellValue());
                             //add usertype
                             tInfo.add("TA");
-                            //add ID
+                            //add ID (and remove scientific format)
                             tInfo.add(String.format("%.0f", sheet.getRow(i).getCell(2).getNumericCellValue()));
                             return tInfo;
                     }
@@ -136,9 +184,10 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void onLoginClick(View view){
+        createDB();
         // TODO change the logic below to really check if a user can have their login attempt authenticated
         // currently just checks if email == "admin@" && password == "password" -> authentication
-
+        emailView.setText(emailView.getText().toString().trim());
 
         // check if email has valid format
         if (!validateEmail(emailView.getText().toString())) {
@@ -149,6 +198,7 @@ public class MainActivity extends AppCompatActivity {
         if (userLogin != null) {
             User user = new User();
 //            Note, the return order will always be email, fname, lname, type, idnum
+            //this is basically just constructing the user class with the proper parameters.
             switch(userLogin.get(3)){
                 case "STUDENT":
                     user = new User(userLogin.get(0), userLogin.get(1), userLogin.get(2), userType.STUDENT, userLogin.get(4));
@@ -162,10 +212,15 @@ public class MainActivity extends AppCompatActivity {
             }
 
             Toast.makeText(getApplicationContext(), "Login Successful", Toast.LENGTH_SHORT).show(); // tell user that authentication complete
-            Intent intent = new Intent(com.example.loginscreen.MainActivity.this, enterRoomCode.class);
-
-            intent.putExtra(LOGIN_EXTRA, (Parcelable) user);
-            startActivity(intent);
+            if(user.type == userType.PROFESSOR){
+                Intent intent = new Intent(com.example.loginscreen.MainActivity.this, createClassActivity.class);
+                intent.putExtra(LOGIN_EXTRA, (Parcelable) user);
+                startActivity(intent);
+            }else{
+                Intent intent = new Intent(com.example.loginscreen.MainActivity.this, enterRoomCode.class);
+                intent.putExtra(LOGIN_EXTRA, (Parcelable) user);
+                startActivity(intent);
+            } //user is student
 
         } else {
             Toast.makeText(getApplicationContext(), "Incorrect email or password", Toast.LENGTH_SHORT).show(); // display error message
@@ -181,6 +236,13 @@ public class MainActivity extends AppCompatActivity {
         finish(); //Finish tasks & call destructors
         System.exit(0); // exit with status 0
     }
+
+    public void onSignUpClick(View view){
+        Intent intent = new Intent(com.example.loginscreen.MainActivity.this, signUpActivity.class);
+
+        startActivity(intent);
+    }
+
     // return true if email has valid format, false if email does not.
     public boolean validateEmail(String email) {
         // if email contains ' ' -> DO NOT AUTHENTICATE, INVALID EMAIL

@@ -39,7 +39,7 @@ public class enterRoomCode extends AppCompatActivity {
     }
 
     public void sendClassCode(View view){
-//        Intent intent = new Intent(this)
+
     }
 
     public void sendExamCode(View view){

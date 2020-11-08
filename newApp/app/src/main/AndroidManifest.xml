@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.loginscreen">
-    <uses-feature android:name="android.hardware.camera"
-                  android:required="true" />
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
@@ -13,6 +16,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.LoginScreen">
+        <activity android:name=".roomcode.createClass"></activity>
+        <activity android:name=".roomcode.createRoom" />
+        <activity android:name=".roomcode.createClassActivity" />
+        <activity android:name=".signUpActivity" />
+        <activity
+            android:name=".ui.login.signUpActivity"
+            android:label="@string/title_activity_sign_up" />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.example.android.fileprovider"
@@ -20,9 +31,10 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths"></meta-data>
+                android:resource="@xml/file_paths" />
         </provider>
-        <activity android:name=".roomcode.examEntry"></activity>
+
+        <activity android:name=".roomcode.examEntry" />
         <activity android:name=".roomcode.enterRoomCode" />
         <activity android:name=".MainActivity">
             <intent-filter>

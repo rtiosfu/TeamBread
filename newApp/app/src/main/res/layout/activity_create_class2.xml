@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".roomcode.createClass">
+
+    <TextView
+        android:id="@+id/createClassroomTitle"
+        android:layout_width="188dp"
+        android:layout_height="57dp"
+        android:layout_marginTop="24dp"
+        android:gravity="center"
+        android:text="@string/createClassroomTitleText"
+        android:textSize="28sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/createClassroomNameEntry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="24dp"
+        android:ems="10"
+        android:hint="@string/createClassroomNameEntryHint"
+        android:inputType="text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/createClassroomTitle" />
+
+    <TextView
+        android:id="@+id/createClassroomGeneratedCodeTitle"
+        android:layout_width="105dp"
+        android:layout_height="23dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/createClassroomGeneratedCode"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/createClassroomNameEntry" />
+
+    <TextView
+        android:id="@+id/createClassroomGeneratedCode"
+        android:layout_width="182dp"
+        android:layout_height="23dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintStart_toEndOf="@+id/createClassroomGeneratedCodeTitle"
+        app:layout_constraintTop_toBottomOf="@+id/createClassroomNameEntry" />
+
+    <Button
+        android:id="@+id/createClassroomButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/createClassroomCreateButton"
+        app:layout_constraintStart_toEndOf="@+id/createClassroomNameEntry"
+        app:layout_constraintTop_toBottomOf="@+id/createClassroomTitle" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
