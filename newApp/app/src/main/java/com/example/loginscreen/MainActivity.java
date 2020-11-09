@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
         passwordView = (EditText)findViewById(R.id.password);
         incorrectAttempts = (TextView)findViewById(R.id.incorrectAttempts);
         incorrectAttempts.setText(Integer.toString(attemptsLeft));
+        createDB();
 
     }
 
@@ -92,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
                 stream.close();
                 fStream.close();
                 FileInputStream test = new FileInputStream(new File(getExternalFilesDir(null) + "/testdataoldver.xls"));
-                System.out.println("Got here");
+//                System.out.println("Got here");
             } catch (IOException e) {
                 System.out.println(e.getCause());
                 System.out.println(e.getMessage());
