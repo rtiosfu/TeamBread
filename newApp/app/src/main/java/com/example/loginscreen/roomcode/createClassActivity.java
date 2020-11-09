@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.View;
 
 public class createClassActivity extends AppCompatActivity {
+    //extra keys
     public static final String CREATE_CLASS_EXTRA = "com.example.loginscreen.roomcode.CREATE_CLASS_USER";
     public static final String CREATE_EXAM_EXTRA = "com.example.loginscreen.roomcode.CREATE_EXAM_USER";
     @Override
@@ -23,6 +24,8 @@ public class createClassActivity extends AppCompatActivity {
     }
 
     User user;
+    //This function will be called when the user clicks 'Create Class'.
+    //It will call the 'createClass' activity and display that screen to the user.
     public void onCreateClassClick(View view){
 
         Intent intent = new Intent(this, com.example.loginscreen.roomcode.createClass.class);
@@ -31,6 +34,8 @@ public class createClassActivity extends AppCompatActivity {
 
     }
 
+    //This function will be called when the user clicks 'Create Exam'.
+    //It will call the 'createRoom' activity and display that screen to the user.
     public void onCreateExamClick(View view){
         Intent intent = new Intent(this, com.example.loginscreen.roomcode.createRoom.class);
         intent.putExtra(CREATE_EXAM_EXTRA, user);

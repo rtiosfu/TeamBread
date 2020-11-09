@@ -26,6 +26,7 @@ import java.io.IOException;
 
 
 public class enterRoomCode extends AppCompatActivity {
+    //setup editable text and certain emails.
     Intent intent;
     String email;
     TextView classCode;
@@ -54,6 +55,7 @@ public class enterRoomCode extends AppCompatActivity {
         nameView.setText("User name: " + user.username);
         typeView.setText("User type: " + user.type);
         idView.setText("User ID: " + String.valueOf(user.ID));
+        //This particular file is the lookup file, containing ids associated with class names.
         classLookup = new File(getExternalFilesDir(null) + "/classes/lookup.xls");
         examCode = findViewById(R.id.roomCodeEntry);
         classCode = findViewById(R.id.classCodeEntry);
@@ -62,10 +64,13 @@ public class enterRoomCode extends AppCompatActivity {
 
     //returns true if the code is in the lookup table.
     public int lookupCode(String code){
-        if(Integer.parseInt(code) < 10000000){
+        //checks if the code is acceptable.
+        code.trim();
+        if(code.length() != 9){
             return -1;
         }
         try {
+            //open class lookup table
             FileInputStream in = new FileInputStream(classLookup);
             HSSFWorkbook workbook = new HSSFWorkbook(in);
             HSSFSheet sheet = workbook.getSheetAt(0);
@@ -74,7 +79,7 @@ public class enterRoomCode extends AppCompatActivity {
             int codeCol = 0;
             int classCol = 1;
             for(int i = 1; i <= rows; i++){
-//                System.out.println(i);
+                //Checking if the code in the row equals the code provided by the user.
                 if (String.format("%.0f", sheet.getRow(i).getCell(codeCol).getNumericCellValue()).equals(code)){
                     roomEntryClassName.setText(sheet.getRow(i).getCell(classCol).getStringCellValue());
                     return i;
@@ -89,8 +94,8 @@ public class enterRoomCode extends AppCompatActivity {
         return -1;
     }
 
+    //Helper function for registerStudent, basically just writes the wb parameter to the registry File parameter.
     public void writeToDB(HSSFWorkbook wb, HSSFSheet s, File registry){
-//        File registry = new File(getExternalFilesDir(null) + "/classes/" + classCode.getText().toString() + ".xls");
         try{
             FileOutputStream out = new FileOutputStream(registry);
             wb.write(out);
@@ -103,13 +108,15 @@ public class enterRoomCode extends AppCompatActivity {
         }
     }
 
+    //register the student into either the class or exam. forClasses is the check that determines if they are trying to get into a class or exam.
     public void registerStudent(int enteredCode, boolean forClasses){
         try {
             File reg;
+            //open the given class code or exam code file.
             if(forClasses) {
                 reg = new File(getExternalFilesDir(null) + "/classes/" + classCode.getText().toString() + ".xls");
             }else{
-                reg = new File(getExternalFilesDir(null) + "/classes/" + examCode.getText().toString() + ".xls");
+                reg = new File(getExternalFilesDir(null) + "/exams/" + examCode.getText().toString() + ".xls");
             }
             FileInputStream in = new FileInputStream(reg);
             HSSFWorkbook workbook = new HSSFWorkbook(in);
@@ -147,7 +154,7 @@ public class enterRoomCode extends AppCompatActivity {
         }
     }
 
-    //implement a dialog asking if they wish to join
+    //implement a dialog asking if they wish to join, only if the code is already in the database.
     public void sendClassCode(View view){
         int row = lookupCode(classCode.getText().toString());
 
@@ -173,10 +180,14 @@ public class enterRoomCode extends AppCompatActivity {
 
             AlertDialog dialog = builder.create();
             dialog.show();
+        }else{
+            Toast.makeText(getApplicationContext(), "Invalid Code.", Toast.LENGTH_SHORT).show();
         }
 //        System.out.println(lookupCode(classCode.getText().toString()));
     }
 
+    //Takes student to a sample entry exam page. Will be implemented further with exam code checking.
+    //TODO add exam code database comparison.
     public void sendExamCode(View view){
         Intent intent = new Intent(this, com.example.loginscreen.roomcode.examEntry.class);
         startActivity(intent);

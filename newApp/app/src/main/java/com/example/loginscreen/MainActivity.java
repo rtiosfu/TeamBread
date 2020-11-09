@@ -177,12 +177,7 @@ public class MainActivity extends AppCompatActivity {
 //        }
     }
 
-//    public void onLogin(String email){
-//        //TODO determine if email is associated with a TA, Prof, or Student and then fill the associated classes.
-//        //note that the constructors request email, password, username, userType in that order.
-//    }
-
-
+    //On click of login button, will create database if needed, and then checks user login against it.
     public void onLoginClick(View view){
         createDB();
         // TODO change the logic below to really check if a user can have their login attempt authenticated
@@ -212,6 +207,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             Toast.makeText(getApplicationContext(), "Login Successful", Toast.LENGTH_SHORT).show(); // tell user that authentication complete
+            //Take the professor to the professor page, and the student to the student page.
             if(user.type == userType.PROFESSOR){
                 Intent intent = new Intent(com.example.loginscreen.MainActivity.this, createClassActivity.class);
                 intent.putExtra(LOGIN_EXTRA, (Parcelable) user);
@@ -237,6 +233,7 @@ public class MainActivity extends AppCompatActivity {
         System.exit(0); // exit with status 0
     }
 
+    //When the user clicks the sign up button, take them to the sign up page.
     public void onSignUpClick(View view){
         Intent intent = new Intent(com.example.loginscreen.MainActivity.this, signUpActivity.class);
 

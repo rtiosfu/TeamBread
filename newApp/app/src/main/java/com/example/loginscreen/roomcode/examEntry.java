@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+//Dummy pre-exam entry page. Will lead to an actual exam page and will involve photo checking.
 public class examEntry extends AppCompatActivity {
 
     @Override
@@ -71,6 +72,7 @@ public class examEntry extends AppCompatActivity {
 
     }
 
+    //Displays the last photo that the camera has taken on the screen.
     public void setImage(View view){
         File cardScanFile = new File(currentPhotoPath);
         if(cardScanFile.exists()) {
@@ -83,6 +85,7 @@ public class examEntry extends AppCompatActivity {
 
     String currentPhotoPath;
 
+    //helper to the photo function that saves the file to the picture directory.
     private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());

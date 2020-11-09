@@ -22,14 +22,12 @@ import java.util.Calendar;
 
 public class createRoom extends AppCompatActivity {
 
+    //Set up all of the editable text boxes.
     TextView examTimeHour;
     TextView examTimeMin;
     TextView examYear;
     TextView examMonth;
     TextView examDay;
-    TimePicker simpleTimePicker;
-    int sExamTimeHour;
-    int sExamTimeMin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +39,7 @@ public class createRoom extends AppCompatActivity {
         examMonth = findViewById(R.id.examCreateRoomDayMonth);
         examDay = findViewById(R.id.examCreateRoomDay);
         Calendar calendar = Calendar.getInstance();
+        //set each box to the current date and time.
         examYear.setText(Integer.toString(calendar.get(Calendar.YEAR)));
         examMonth.setText(Integer.toString(calendar.get(Calendar.MONTH)));
         examDay.setText(Integer.toString(calendar.get(Calendar.DAY_OF_MONTH)));
@@ -48,22 +47,6 @@ public class createRoom extends AppCompatActivity {
         examTimeMin.setText(String.format("%02d", calendar.get(Calendar.MINUTE)));
     }
 
+    //TODO Add functionality to create lookup file, create class files, and update.
 
-
-    public void setBoxes(int hour, int min){
-        examTimeHour.setText(Integer.toString(hour));
-        examTimeMin.setText(Integer.toString(min));
-    }
-
-
-    public void showTimePickerDialog(View v) {
-//        Intent intent = new Intent(this, pickDateTime.class);
-//        startActivity(intent);
-    }
-
-
-//    public void test(View view){
-//        Calendar calendar = Calendar.getInstance();
-//
-//    }
 }

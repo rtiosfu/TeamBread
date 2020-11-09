@@ -11,6 +11,7 @@ import com.example.loginscreen.R;
 
 import java.util.Calendar;
 
+//Test class. unused in the final app.
 public class pickDateTime extends AppCompatActivity {
 
     TextView parentExamTimeHour;

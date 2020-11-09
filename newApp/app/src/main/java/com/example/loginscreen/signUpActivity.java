@@ -37,8 +37,8 @@ public class signUpActivity extends AppCompatActivity {
 
 
     //Check if all of the fields have been filled and a radio button has been checked
-    //student id =
-    //prof id =
+    //Return true if email matches email pattern, and all of the other fields have something in them.
+    //False otherwise.
     public boolean canSubmit(){
 //        System.out.println(typeButton.getCheckedRadioButtonId());
 //        System.out.println(typeButton.getCheckedRadioButtonId() == R.id.userTypeProfessorRB);
@@ -51,6 +51,7 @@ public class signUpActivity extends AppCompatActivity {
                 typeButton.getCheckedRadioButtonId() != -1;
     }
 
+    //Returns the user type. TA is not included as it cannot be chosen during sign-up.
     public userType retUserType(){
         if(typeButton.getCheckedRadioButtonId() == R.id.userTypeStudentRB){
             return userType.STUDENT;
@@ -73,10 +74,13 @@ public class signUpActivity extends AppCompatActivity {
 
     }
 
+    //Check if the email matches any in the database.
+    //Returns true if so, false if not.
     public boolean doesEmailMatch(){
         HSSFWorkbook workbook = null;
         HSSFSheet sheet = null;
         try {
+            //open the test data file.
             File file = new File(getExternalFilesDir(null) + "/testdataoldver.xls");
             FileInputStream fStream = new FileInputStream(file);
             workbook = new HSSFWorkbook(fStream);
@@ -91,6 +95,7 @@ public class signUpActivity extends AppCompatActivity {
         int currRows = sheet.getLastRowNum();
         int emailCol = 3;
         String testEmail = email.getText().toString();
+        //check through the column of emails against the inputted email.
         for(int i = 1; i <=currRows; i++){
             if(sheet.getRow(i).getCell(emailCol).getStringCellValue().equals(testEmail)){
                 try {
@@ -108,6 +113,7 @@ public class signUpActivity extends AppCompatActivity {
         return false;
     }
 
+    //Check if the email is already in the database, and then display a toast depending on the input.
     public void checkEmail(View view){
         if(doesEmailMatch()){
             Toast.makeText(getApplicationContext(), "Email is already in use. Please try another.", Toast.LENGTH_SHORT).show();
@@ -118,6 +124,7 @@ public class signUpActivity extends AppCompatActivity {
         }
     }
 
+    //Write sign up information to the database.
     public void writeToDatabase(User u){
         HSSFWorkbook workbook = null;
         HSSFSheet sheet = null;
@@ -133,12 +140,14 @@ public class signUpActivity extends AppCompatActivity {
             System.out.println(e.getMessage());
             e.printStackTrace();
         }
+        //create an arraylist to insert.
         Object[] toInsert = {fname.getText().toString(), lname.getText().toString(), Integer.parseInt(u.ID), u.email, u.type.toString(), pword.getText().toString()};
         int currRows = sheet.getLastRowNum();
 //        System.out.println(currRows);
         Row row = sheet.createRow(++currRows);
 
         int col = 0;
+        //Insert the above list into the row of the excel sheet.
         for(Object field : toInsert){
             Cell cell = row.createCell(col);
             col++;
@@ -150,6 +159,7 @@ public class signUpActivity extends AppCompatActivity {
         }
 
         try {
+            //write to the file.
             FileOutputStream outputStream = new FileOutputStream(getExternalFilesDir(null) + "/testdataoldver.xls");
             workbook.write(outputStream);
             workbook.close();
@@ -166,9 +176,10 @@ public class signUpActivity extends AppCompatActivity {
 
     }
 
+    //on user submit click.
     public void submitClick(View view){
         if(canSubmit()){
-            //create user
+            //create user class from the data in the text boxes.
             User user = new User(email.getText().toString().trim(), fname.getText().toString().trim(),
                                 lname.getText().toString().trim(), retUserType(),
                                 id.getText().toString().trim());
@@ -176,12 +187,9 @@ public class signUpActivity extends AppCompatActivity {
             writeToDatabase(user);
             Toast.makeText(getApplicationContext(), "Account Created. Please log in.", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
         }else{
             Toast.makeText(getApplicationContext(), "Invalid entry. Please check your inputs.", Toast.LENGTH_SHORT).show(); // display error message
         }
-
     }
-
-
-
 }
