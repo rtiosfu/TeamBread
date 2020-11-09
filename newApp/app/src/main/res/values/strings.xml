@@ -38,17 +38,22 @@
     <string name="createExamButton">Create an Exam</string>
     <string name="createCheckExisting">Check your rooms</string>
     <string name="title_activity_create_class">createClass</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
-
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="firstfragment">Hello</string>
     <string name="title_activity_create_room">createRoom</string>
     <string name="createClassroomTitleText">Create a Class</string>
     <string name="createClassroomNameEntryHint">Class Title</string>
     <string name="createClassroomGeneratedCode">Generated code:</string>
     <string name="createClassroomCreateButton">Create</string>
+    <string name="createExamRoomTitle">Create an Exam</string>
+    <string name="createExamRoomDateHint">Exam Date</string>
+    <string name="createExamRoomNameHint">Exam Name</string>
+    <string name="createExamRoomDatePrompt">Select a Date and Time:</string>
+    <string name="createExamRoomDateMonth">Mo.</string>
+    <string name="createExamRoomDateDay">Day</string>
+    <string name="createExamDateYear">Year</string>
+    <string name="createExamTimeHour">HH</string>
+    <string name="createExamRoomTime">Time: (24h HH:MM)</string>
+    <string name="createExamRoomDayTitleText">Date: (YYYY/MM/DD)</string>
 </resources>

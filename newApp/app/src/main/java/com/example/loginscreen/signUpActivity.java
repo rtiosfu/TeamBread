@@ -174,6 +174,8 @@ public class signUpActivity extends AppCompatActivity {
                                 id.getText().toString().trim());
             //write user to database
             writeToDatabase(user);
+            Toast.makeText(getApplicationContext(), "Account Created. Please log in.", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, MainActivity.class);
         }else{
             Toast.makeText(getApplicationContext(), "Invalid entry. Please check your inputs.", Toast.LENGTH_SHORT).show(); // display error message
         }

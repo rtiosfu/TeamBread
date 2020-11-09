@@ -11,10 +11,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.loginscreen.R;
-import com.example.loginscreen.roomcode.*;
 import com.example.loginscreen.roomcode.User.User;
 
-import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
@@ -25,7 +23,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Random;
 
 public class createClass extends AppCompatActivity {
@@ -101,6 +98,7 @@ public class createClass extends AppCompatActivity {
             cell.setCellValue(cName);
             wb.write(out);
             out.close();
+            wb.close();
     }catch(IOException e){
         Toast.makeText(getApplicationContext(), "Error opening database. Please try again.", Toast.LENGTH_SHORT).show();
         System.out.println(e.getCause());
@@ -180,8 +178,8 @@ public class createClass extends AppCompatActivity {
         Intent intent = getIntent();
         user = intent.getParcelableExtra(createClassActivity.CREATE_CLASS_EXTRA);
         lookup = new File(getExternalFilesDir(null) + "/classes/lookup.xls");
-        classTitle = (TextView)findViewById(R.id.createClassroomNameEntry);
-        code = (TextView)findViewById(R.id.createClassroomGeneratedCode);
+        classTitle = (TextView)findViewById(R.id.createExamRoomNameEntry);
+        code = (TextView)findViewById(R.id.createExamRoomGeneratedCode);
         if(!lookup.exists()){
             createLookup();
         }
