@@ -1,3 +1,11 @@
+////////////////////////////////////////////
+//TEAM BREAD
+//examEntry.java
+//PROGRAMMERS:Ryan
+//KNOWN BUGS: Picture requires the submit button to be clicked before it is displayed.
+//V2 CHANGES: None yet.
+////////////////////////////////////////////
+
 package com.example.loginscreen.roomcode;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,7 +32,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-//Dummy pre-exam entry page. Will lead to an actual exam page and will involve photo checking.
+//Dummy pre-exam entry page. Will lead to an actual exam page and will involve photo checking in version 2.
 public class examEntry extends AppCompatActivity {
 
     @Override
@@ -33,6 +41,7 @@ public class examEntry extends AppCompatActivity {
         setContentView(R.layout.activity_exam_entry);
     }
 
+    //Code to signal to mediastore that we wish to take an image.
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
 //    public void dispatchTakePictureIntent(View view){

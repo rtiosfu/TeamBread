@@ -1,3 +1,11 @@
+////////////////////////////////////////////
+//TEAM BREAD
+//MainActivity.Java
+//PROGRAMMERS:Ryan, Dylan
+//KNOWN BUGS:Textboxes to not reset after signing up.
+//V2 CHANGES: None yet.
+////////////////////////////////////////////
+
 package com.example.loginscreen;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -54,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    //Helper function that creates a file directory in the Android/Data/com.example.loginscreen/
     public void makeDirs(String name){
         File file = new File(getExternalFilesDir(null) + "/" +  name);
         if(!file.exists()){
@@ -65,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
 //        System.out.println("Copying");
         InputStream fStream = getResources().openRawResource(R.raw.testdataoldver);
         File file = new File(getExternalFilesDir(null) + "/testdataoldver.xls");
+        //Create any folders if needed.
         makeDirs("classes");
         makeDirs("exams");
         makeDirs("professors");
@@ -228,6 +238,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //Close the app gracefully.
     public void onCloseClick(View view){
         finish(); //Finish tasks & call destructors
         System.exit(0); // exit with status 0

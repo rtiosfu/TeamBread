@@ -1,3 +1,11 @@
+////////////////////////////////////////////
+//TEAM BREAD
+//enterRoomCode.java
+//PROGRAMMERS:Ryan
+//KNOWN BUGS: None yet.
+//V2 CHANGES: None yet.
+////////////////////////////////////////////
+
 package com.example.loginscreen.roomcode;
 
 import androidx.appcompat.app.AlertDialog;
@@ -25,6 +33,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 
+//Screen for the Student to enter either a room code or class code. Displays student info as well.
 public class enterRoomCode extends AppCompatActivity {
     //setup editable text and certain emails.
     Intent intent;

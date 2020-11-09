@@ -1,3 +1,11 @@
+////////////////////////////////////////////
+//TEAM BREAD
+//createClassActivity.java
+//PROGRAMMERS:Ryan
+//KNOWN BUGS: None yet.
+//V2 CHANGES: None yet.
+////////////////////////////////////////////
+
 package com.example.loginscreen.roomcode;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +19,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+
+//TODO Add functionality for the 'check rooms' button that shows the professor their existing rooms
+//This screen is essentially a navigation screen that allows a professor user to
+//Create a class
+//Create an exam
+//Check existing classes and exams
 public class createClassActivity extends AppCompatActivity {
     //extra keys
     public static final String CREATE_CLASS_EXTRA = "com.example.loginscreen.roomcode.CREATE_CLASS_USER";
@@ -41,7 +55,4 @@ public class createClassActivity extends AppCompatActivity {
         intent.putExtra(CREATE_EXAM_EXTRA, user);
         startActivity(intent);
     }
-
-
-
 }

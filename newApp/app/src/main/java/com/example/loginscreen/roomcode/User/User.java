@@ -1,3 +1,11 @@
+////////////////////////////////////////////
+//TEAM BREAD
+//User.java
+//PROGRAMMERS:Ryan
+//KNOWN BUGS: None yet.
+//V2 CHANGES: None yet.
+////////////////////////////////////////////
+
 package com.example.loginscreen.roomcode.User;
 
 import android.os.Parcel;
@@ -5,6 +13,8 @@ import android.os.Parcelable;
 
 import java.util.ArrayList;
 
+
+//Base user class. Will likely be the only class that ends up being used.
 public class User implements Parcelable {
 
     public String email;
@@ -110,7 +120,6 @@ public class User implements Parcelable {
             readParcelHelper(in, exams);
         }
         loc = in.readString();
-
     }
 
 }

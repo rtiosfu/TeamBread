@@ -1,3 +1,11 @@
+////////////////////////////////////////////
+//TEAM BREAD
+//createClass.java
+//PROGRAMMERS:Ryan
+//KNOWN BUGS: Generated room code may be a duplicate. Drastically unlikely, but not guaranteed not to be.
+//V2 CHANGES: None yet.
+////////////////////////////////////////////
+
 package com.example.loginscreen.roomcode;
 
 import androidx.appcompat.app.AlertDialog;
@@ -25,6 +33,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Random;
 
+//Screen that allows a professor to create a class
+//Providing a class name.
 public class createClass extends AppCompatActivity {
 
     //Generates and returns a random 10 digit code.

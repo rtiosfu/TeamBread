@@ -1,3 +1,11 @@
+////////////////////////////////////////////
+//TEAM BREAD
+//Result.java
+//PROGRAMMERS:Dylan
+//KNOWN BUGS: None yet.
+//V2 CHANGES: None yet.
+////////////////////////////////////////////
+
 package com.example.loginscreen.data;
 
 /**

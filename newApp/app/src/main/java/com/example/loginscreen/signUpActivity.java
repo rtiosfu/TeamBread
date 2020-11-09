@@ -1,3 +1,11 @@
+////////////////////////////////////////////
+//TEAM BREAD
+//signUpActivity.java
+//PROGRAMMERS:Ryan
+//KNOWN BUGS: None yet.
+//V2 CHANGES: None yet.
+////////////////////////////////////////////
+
 package com.example.loginscreen;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,6 +34,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+
+//The screen for the sign up page. Users may sign up for this service using an email and
+//Other related information.
 public class signUpActivity extends AppCompatActivity {
 
     TextView email;

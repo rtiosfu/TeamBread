@@ -1,3 +1,11 @@
+////////////////////////////////////////////
+//TEAM BREAD
+//createRoom.java
+//PROGRAMMERS:Ryan
+//KNOWN BUGS: None
+//V2 CHANGES: None yet.
+////////////////////////////////////////////
+
 package com.example.loginscreen.roomcode;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,6 +28,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 
+//Screen that allows a Professor user to create an exam room by specifying Class,
+//start and end time, as well as exam title.
 public class createRoom extends AppCompatActivity {
 
     //Set up all of the editable text boxes.
@@ -48,5 +58,6 @@ public class createRoom extends AppCompatActivity {
     }
 
     //TODO Add functionality to create lookup file, create class files, and update.
+    //TODO associate an exam with a class that already exists through the class ID.
 
 }
