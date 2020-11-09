@@ -39,6 +39,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
+//The main activity (Login screen.) Accepts user email and password
+//and logs in if they match the database.
 public class MainActivity extends AppCompatActivity {
 
     Button loginButton;
