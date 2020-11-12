@@ -62,9 +62,6 @@ public class signUpActivity extends AppCompatActivity {
     //Return true if email matches email pattern, and all of the other fields have something in them.
     //False otherwise.
     public boolean canSubmit(){
-//        System.out.println(typeButton.getCheckedRadioButtonId());
-//        System.out.println(typeButton.getCheckedRadioButtonId() == R.id.userTypeProfessorRB);
-//        System.out.println(typeButton.getCheckedRadioButtonId() == R.id.userTypeStudentRB);
         return (Patterns.EMAIL_ADDRESS.matcher(email.getText().toString()).matches()) &&
                 !(fname.getText().toString().equals("")) &&
                 !(lname.getText().toString().equals("")) &&

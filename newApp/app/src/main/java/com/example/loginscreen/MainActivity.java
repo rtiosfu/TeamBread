@@ -155,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
                             Log.w("CREATE_ACCOUNT_FAILURE", "createUserWithEmail:failure", task.getException());
                             Toast.makeText(getApplicationContext(), "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
-//                            updateUI(null);
+
                         }
 
                     }
