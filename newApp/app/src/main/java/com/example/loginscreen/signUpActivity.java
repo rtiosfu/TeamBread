@@ -105,46 +105,6 @@ public class signUpActivity extends AppCompatActivity {
     }
 
 
-
-    //Check if the email matches any in the database.
-    //Returns true if so, false if not.
-//    public boolean doesEmailMatch(){
-//        HSSFWorkbook workbook = null;
-//        HSSFSheet sheet = null;
-//        try {
-//            //open the test data file.
-//            File file = new File(getExternalFilesDir(null) + "/testdataoldver.xls");
-//            FileInputStream fStream = new FileInputStream(file);
-//            workbook = new HSSFWorkbook(fStream);
-//            sheet = workbook.getSheetAt(0);
-//            fStream.close();
-//        } catch (IOException e) {
-//            Toast.makeText(getApplicationContext(), "Error opening database. Please try again.", Toast.LENGTH_SHORT).show();
-//            System.out.println(e.getCause());
-//            System.out.println(e.getMessage());
-//            e.printStackTrace();
-//        }
-//        int currRows = sheet.getLastRowNum();
-//        int emailCol = 3;
-//        String testEmail = email.getText().toString();
-//        //check through the column of emails against the inputted email.
-//        for(int i = 1; i <=currRows; i++){
-//            if(sheet.getRow(i).getCell(emailCol).getStringCellValue().equals(testEmail)){
-//                try {
-//                    workbook.close();
-//                    return true;
-//                }catch (IOException e){
-//                    Toast.makeText(getApplicationContext(), "Error opening database. Please try again.", Toast.LENGTH_SHORT).show();
-//                    System.out.println(e.getCause());
-//                    System.out.println(e.getMessage());
-//                    e.printStackTrace();
-//                }
-//            }
-//        }
-//
-//        return false;
-//    }
-
     public boolean doesEmailMatch(){
         return false;
     }
@@ -159,58 +119,6 @@ public class signUpActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Invalid email format.", Toast.LENGTH_SHORT).show();
         }
     }
-
-    //Write sign up information to the database.
-//    public void writeToDatabase(User u){
-//        HSSFWorkbook workbook = null;
-//        HSSFSheet sheet = null;
-//        try {
-//            File file = new File(getExternalFilesDir(null) + "/testdataoldver.xls");
-//            FileInputStream fStream = new FileInputStream(file);
-//            workbook = new HSSFWorkbook(fStream);
-//            sheet = workbook.getSheetAt(0);
-//            fStream.close();
-//        } catch (IOException e) {
-//            Toast.makeText(getApplicationContext(), "Error opening database. Please try again.", Toast.LENGTH_SHORT).show();
-//            System.out.println(e.getCause());
-//            System.out.println(e.getMessage());
-//            e.printStackTrace();
-//        }
-//        //create an arraylist to insert.
-//        Object[] toInsert = {fname.getText().toString(), lname.getText().toString(), Integer.parseInt(u.ID), u.email, u.type.toString(), pword.getText().toString()};
-//        int currRows = sheet.getLastRowNum();
-////        System.out.println(currRows);
-//        Row row = sheet.createRow(++currRows);
-//
-//        int col = 0;
-//        //Insert the above list into the row of the excel sheet.
-//        for(Object field : toInsert){
-//            Cell cell = row.createCell(col);
-//            col++;
-//            if(field instanceof String){
-//                cell.setCellValue((String) field);
-//            }else if (field instanceof Integer){
-//                cell.setCellValue((Integer) field);
-//            }
-//        }
-//
-//        try {
-//            //write to the file.
-//            FileOutputStream outputStream = new FileOutputStream(getExternalFilesDir(null) + "/testdataoldver.xls");
-//            workbook.write(outputStream);
-//            workbook.close();
-//            outputStream.close();
-//        }catch(FileNotFoundException e){
-//            System.out.println(e.getCause());
-//            System.out.println(e.getMessage());
-//            e.printStackTrace();
-//        }catch(IOException e){
-//            System.out.println(e.getCause());
-//            System.out.println(e.getMessage());
-//            e.printStackTrace();
-//        }
-//
-//    }
 
     public void createNewUser(String username, String fName, String lName, String idNum, String type,
                               String status, String classID, String examID) {

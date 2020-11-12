@@ -58,9 +58,7 @@ public class MainActivity extends AppCompatActivity {
     EditText emailView;
     EditText passwordView;
     TextView incorrectAttempts;
-    //    public User user = new User("Dummy@email.xyz", "Dummy", "User", userType.STUDENT, "00000000");
-//    public String email = user.email;
-//    public String password = "NULL";
+
     public FirebaseDatabase database = FirebaseDatabase.getInstance();
     public DatabaseReference userRef = database.getReference("Proproct");
     private FirebaseAuth mAuth;
@@ -117,13 +115,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-//        if(userRef.child("Users").child(username){
-//        //entry already exists. Do nothing
-//        }else{
-//            System.out.println("Made it");
-//        }
-
-
 
     }
 
