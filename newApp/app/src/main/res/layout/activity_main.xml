@@ -34,12 +34,14 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
         android:layout_marginTop="46dp"
         android:focusable="true"
         android:hint="@string/mainEmailTextHint"
         android:inputType="textEmailAddress"
-        android:textColorHighlight="#ff7eff15"
-        android:textColorHint="#000000" />
+        android:textColorHighlight="@color/black"
+        android:textColorHint="@android:color/darker_gray" />
 
     <EditText
         android:id="@+id/password"
@@ -50,31 +52,40 @@
         android:layout_alignRight="@+id/email"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
         android:ems="10"
         android:hint="@string/mainPasswordTextHint"
         android:inputType="textPassword"
-        android:textColorHint="#000000" />
+        android:textColorHint="@android:color/darker_gray" />
+
+
+    <EditText
+        android:id="@+id/mainStudentID"
+        android:layout_width="375dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/password"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="0dp"
+        android:ems="10"
+        android:hint="@string/mainIDEntryHint"
+        android:inputType="number" />
 
     <TextView
         android:id="@+id/attemptslefttext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/password"
+        android:layout_below="@+id/ProProct"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
+        android:layout_marginStart="18dp"
+        android:layout_marginLeft="18dp"
+        android:layout_marginTop="194dp"
         android:text="@string/mainAttemptsLeftText"
-        android:textSize="25sp" />
-
-    <TextView
-        android:id="@+id/incorrectAttempts"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/attemptslefttext"
-        android:layout_alignBottom="@+id/attemptslefttext"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_toEndOf="@+id/loginText"
-        android:layout_toRightOf="@+id/loginText"
         android:textSize="25sp" />
 
     <Button
@@ -84,15 +95,46 @@
         android:layout_below="@+id/attemptslefttext"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
-        android:layout_marginStart="35dp"
-        android:layout_marginLeft="35dp"
-        android:layout_marginTop="59dp"
+        android:layout_marginStart="53dp"
+        android:layout_marginLeft="53dp"
+        android:layout_marginTop="58dp"
         android:layout_marginEnd="59dp"
         android:layout_marginRight="59dp"
         android:layout_toStartOf="@+id/signUpButton"
         android:layout_toLeftOf="@+id/signUpButton"
         android:onClick="onLoginClick"
         android:text="@string/mainLoginButton" />
+
+    <Button
+        android:id="@+id/signUpButton"
+        android:layout_width="110dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/incorrectAttempts"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="57dp"
+        android:layout_marginEnd="63dp"
+        android:layout_marginRight="63dp"
+        android:onClick="onSignUpClick"
+        android:text="@string/mainSignUpButton" />
+
+    <TextView
+        android:id="@+id/incorrectAttempts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/attemptslefttext"
+        android:layout_alignBottom="@+id/attemptslefttext"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginStart="3dp"
+        android:layout_marginLeft="3dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="13dp"
+        android:layout_marginRight="13dp"
+        android:layout_marginBottom="0dp"
+        android:layout_toEndOf="@+id/loginText"
+        android:layout_toRightOf="@+id/loginText"
+        android:textSize="25sp" />
 
     <Button
         android:id="@+id/closebutton"
@@ -112,17 +154,5 @@
         android:onClick="onCloseClick"
         android:text="@string/mainCloseButton" />
 
-    <Button
-        android:id="@+id/signUpButton"
-        android:layout_width="110dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/incorrectAttempts"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="58dp"
-        android:layout_marginEnd="49dp"
-        android:layout_marginRight="49dp"
-        android:onClick="onSignUpClick"
-        android:text="@string/mainSignUpButton" />
 
 </RelativeLayout>

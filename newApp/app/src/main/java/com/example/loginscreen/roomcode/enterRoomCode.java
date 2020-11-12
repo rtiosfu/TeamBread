@@ -31,6 +31,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Locale;
 
 
 //Screen for the Student to enter either a room code or class code. Displays student info as well.
@@ -60,6 +61,7 @@ public class enterRoomCode extends AppCompatActivity {
         typeView = findViewById(R.id.typeString);
         idView = findViewById(R.id.idString);
         user = intent.getParcelableExtra(MainActivity.LOGIN_EXTRA);
+        System.out.println(user.email);
         emailView.setText("User email: " + user.email);
         nameView.setText("User name: " + user.username);
         typeView.setText("User type: " + user.type);
@@ -89,7 +91,7 @@ public class enterRoomCode extends AppCompatActivity {
             int classCol = 1;
             for(int i = 1; i <= rows; i++){
                 //Checking if the code in the row equals the code provided by the user.
-                if (String.format("%.0f", sheet.getRow(i).getCell(codeCol).getNumericCellValue()).equals(code)){
+                if (String.format(Locale.ENGLISH, "%.0f", sheet.getRow(i).getCell(codeCol).getNumericCellValue()).equals(code)){
                     roomEntryClassName.setText(sheet.getRow(i).getCell(classCol).getStringCellValue());
                     return i;
                 }
@@ -134,7 +136,7 @@ public class enterRoomCode extends AppCompatActivity {
             int row = 1;
             int maxRow = sheet.getLastRowNum();
             int studentCol = 0;
-            for(row = row; row <= maxRow; row++){
+            for(; row <= maxRow; row++){
                 Row checkRow = sheet.getRow(row);
                 if(checkRow != null){
                     Cell c = checkRow.getCell(studentCol);
@@ -154,7 +156,7 @@ public class enterRoomCode extends AppCompatActivity {
             String addEmail = user.email.trim();
             c.setCellValue(addEmail);
             writeToDB(workbook, sheet, reg);
-            return;
+            //returns from here
 
         }catch(IOException e){
             System.out.println(e.getCause());

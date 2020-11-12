@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.RadioGroup;
@@ -20,43 +21,54 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.loginscreen.roomcode.User.*;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.example.loginscreen.MainActivity;
-import com.google.firebase.auth.FirebaseUser;
+//import com.example.loginscreen.MainActivity;
+//import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.w3c.dom.Text;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-
 
 //The screen for the sign up page. Users may sign up for this service using an email and
 //Other related information.
 public class signUpActivity extends AppCompatActivity {
 
-    TextView email;
-    TextView fname;
-    TextView lname;
-    TextView pword;
-    TextView id;
-    RadioGroup typeButton;
+    public TextView email;
+    public TextView fname;
+    public TextView lname;
+    public TextView pword;
+    public TextView id;
+    public RadioGroup typeButton;
     public FirebaseDatabase database = FirebaseDatabase.getInstance();
     public DatabaseReference userRef = database.getReference("Proproct");
     private FirebaseAuth mAuth;
+
+    public User user;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_sign_up);
+        email = findViewById(R.id.signUpEmailEntry);
+        fname = findViewById(R.id.signUpFirstNameEntry);
+        lname = findViewById(R.id.signUpLastNameEntry);
+        pword = findViewById(R.id.signUpPasswordEntry);
+        id = findViewById(R.id.signUpStudentNumberEntry);
+        typeButton = findViewById(R.id.userTypeRadioGroup);
+        mAuth = FirebaseAuth.getInstance();
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        //Check if user is already signed in
+//        FirebaseUser currentUser = mAuth.getCurrentUser();
+    }
+
 
     //Check if all of the fields have been filled and a radio button has been checked
     //Return true if email matches email pattern, and all of the other fields have something in them.
@@ -79,29 +91,6 @@ public class signUpActivity extends AppCompatActivity {
         }
     }
 
-    User user;
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_up);
-        email = (TextView)findViewById(R.id.signUpEmailEntry);
-        fname = (TextView)findViewById(R.id.signUpFirstNameEntry);
-        lname = (TextView)findViewById(R.id.signUpLastNameEntry);
-        pword = (TextView)findViewById(R.id.signUpPasswordEntry);
-        id = (TextView)findViewById(R.id.signUpStudentNumberEntry);
-        typeButton = (RadioGroup)findViewById(R.id.userTypeRadioGroup);
-        mAuth = FirebaseAuth.getInstance();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-//        updateUI(currentUser);
-    }
-
-
     public boolean doesEmailMatch(){
         return false;
     }
@@ -117,35 +106,60 @@ public class signUpActivity extends AppCompatActivity {
         }
     }
 
-    public void createNewUser(String username, String fName, String lName, String idNum, String type,
+
+    public void createAuthUser(String email, String password){
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d("AUTH_CREATE_SUCCESS", "createUserWithEmail:success");
+//                            FirebaseUser user = mAuth.getCurrentUser();
+//                            updateUI(user);
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w("AUTH_CREATE_FAIL", "createUserWithEmail:failure", task.getException());
+                            Toast.makeText(getApplicationContext(), "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+//                            updateUI(null);
+                        }
+                        // ...
+                    }
+                });
+    }
+
+    public void createNewUser(String username, String fName, String lName, String email, String type,
                               String status, String classID, String examID) {
         DatabaseReference usernameRef = userRef.child("Users").child(username);
         usernameRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-                    Toast.makeText(getApplicationContext(), "Registration Failed. User already exists.", Toast.LENGTH_SHORT).show();
+                    //the account already exists.
+                    Toast.makeText(getApplicationContext(), "Account already taken.", Toast.LENGTH_SHORT).show();
                 } else {
                     userRef.child("Users").child(username).child("fName").setValue(fName);
                     userRef.child("Users").child(username).child("lName").setValue(lName);
                     userRef.child("Users").child(username).child("type").setValue(type);
                     userRef.child("Users").child(username).child("status").setValue(status);
-                    userRef.child("Users").child(username).child("email").setValue(idNum);
+                    userRef.child("Users").child(username).child("email").setValue(email);
                     userRef.child("Users").child(username).child("classID").setValue(classID);
                     userRef.child("Users").child(username).child("examID").setValue(examID);
+                    Toast.makeText(getApplicationContext(), "Account Created. Please log in.", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                Toast.makeText(getApplicationContext(), "Database failure. Please try again.", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     public void writeToDatabase(){
         createNewUser(id.getText().toString().trim(), fname.getText().toString().trim(),
-                lname.getText().toString().trim(), retUserType().toString(), email.getText().toString().trim(), "signed in",
+                lname.getText().toString().trim(), email.getText().toString().trim(), retUserType().toString(), "signed in",
                 null, null);
     }
 
@@ -153,12 +167,12 @@ public class signUpActivity extends AppCompatActivity {
     public void submitClick(View view){
         if(canSubmit()){
             //create user class from the data in the text boxes.
-            User user = new User(email.getText().toString().trim(), fname.getText().toString().trim(),
-                                lname.getText().toString().trim(), retUserType(),
-                                id.getText().toString().trim());
+//            User user = new User(email.getText().toString().trim(), fname.getText().toString().trim(),
+//                                lname.getText().toString().trim(), retUserType(),
+//                                id.getText().toString().trim());
             //write user to database
             writeToDatabase();
-            Toast.makeText(getApplicationContext(), "Account Created. Please log in.", Toast.LENGTH_SHORT).show();
+            createAuthUser(email.getText().toString().trim(), pword.getText().toString());
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         }else{
