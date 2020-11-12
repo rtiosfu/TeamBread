@@ -8,6 +8,7 @@
 
 package com.example.loginscreen;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -16,6 +17,7 @@ import android.os.Environment;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.renderscript.ScriptGroup;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -31,6 +33,16 @@ import org.apache.xmlbeans.UserType;
 import com.example.loginscreen.roomcode.User.*;
 import com.example.loginscreen.roomcode.Room.*;
 import com.example.loginscreen.roomcode.*;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -39,8 +51,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
-//The main activity (Login screen.) Accepts user email and password
-//and logs in if they match the database.
 public class MainActivity extends AppCompatActivity {
 
     Button loginButton;
@@ -48,6 +58,13 @@ public class MainActivity extends AppCompatActivity {
     EditText emailView;
     EditText passwordView;
     TextView incorrectAttempts;
+    //    public User user = new User("Dummy@email.xyz", "Dummy", "User", userType.STUDENT, "00000000");
+//    public String email = user.email;
+//    public String password = "NULL";
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference userRef = database.getReference("ProProct");
+
+    private FirebaseAuth mAuth;
     int attemptsLeft = 5;
     public static final String LOGIN_EXTRA = "com.example.loginscreen.LOGIN_ENTRY";
 
@@ -55,14 +72,78 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mAuth = FirebaseAuth.getInstance();
         loginButton = (Button)findViewById(R.id.loginbutton);
         closeButton = (Button)findViewById(R.id.closebutton);
         emailView = (EditText) findViewById(R.id.email);
         passwordView = (EditText)findViewById(R.id.password);
         incorrectAttempts = (TextView)findViewById(R.id.incorrectAttempts);
         incorrectAttempts.setText(Integer.toString(attemptsLeft));
+        readDBChange();
+//        createVal("Hello");
 
+//        createDB();
     }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        //Check if user is already signed in.
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        //TODO maybe add an updateUI
+    }
+
+
+    public void createVal(String entry){
+//        DatabaseReference dbRef = database.getReference(ref);
+        userRef.setValue(entry);
+    }
+
+    public void readDBChange(){
+        // Read from the database
+        userRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                String value = dataSnapshot.getValue(String.class);
+                Log.d("VAL_READ_SUCCESS", "Value is: " + value);
+                emailView.setText(value);
+                Toast.makeText(getApplicationContext(), "Test", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w("VAL_READ_FAIL", "Failed to read value.", error.toException());
+            }
+        });
+    }
+
+
+    public void createAccount(String email, String password){
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d("CREATE_ACCOUNT_SUCCESS", "createUserWithEmail:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+//                            updateUI(user);
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w("CREATE_ACCOUNT_FAILURE", "createUserWithEmail:failure", task.getException());
+                            Toast.makeText(getApplicationContext(), "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+//                            updateUI(null);
+                        }
+
+                    }
+                });
+    }
+
+
 
     //Helper function that creates a file directory in the Android/Data/com.example.loginscreen/
     public void makeDirs(String name){
@@ -72,36 +153,35 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void createDB(){
-//        System.out.println("Copying");
-        InputStream fStream = getResources().openRawResource(R.raw.testdataoldver);
-        File file = new File(getExternalFilesDir(null) + "/testdataoldver.xls");
-        //Create any folders if needed.
-        makeDirs("classes");
-        makeDirs("exams");
-        makeDirs("professors");
-        makeDirs("students");
-        //only copy if the file does not already exist
-        if(!(file.exists())) {
-            System.out.println(getExternalFilesDir(null));
-            try {
-                FileOutputStream stream = new FileOutputStream(file);
-                byte[] buff = new byte[1024];
-                int read = 0;
-                while ((read = fStream.read(buff)) > 0) {
-                    stream.write(buff, 0, read);
-                }
-                stream.close();
-                fStream.close();
-                FileInputStream test = new FileInputStream(new File(getExternalFilesDir(null) + "/testdataoldver.xls"));
-                System.out.println("Got here");
-            } catch (IOException e) {
-                System.out.println(e.getCause());
-                System.out.println(e.getMessage());
-                e.printStackTrace();
-            }
-        }
-    }
+//    public void createDB(){
+//        InputStream fStream = getResources().openRawResource(R.raw.testdataoldver);
+//        File file = new File(getExternalFilesDir(null) + "/testdataoldver.xls");
+//        //Create any folders if needed.
+//        makeDirs("classes");
+//        makeDirs("exams");
+//        makeDirs("professors");
+//        makeDirs("students");
+//        //only copy if the file does not already exist
+//        if(!(file.exists())) {
+//            System.out.println(getExternalFilesDir(null));
+//            try {
+//                FileOutputStream stream = new FileOutputStream(file);
+//                byte[] buff = new byte[1024];
+//                int read = 0;
+//                while ((read = fStream.read(buff)) > 0) {
+//                    stream.write(buff, 0, read);
+//                }
+//                stream.close();
+//                fStream.close();
+//                FileInputStream test = new FileInputStream(new File(getExternalFilesDir(null) + "/testdataoldver.xls"));
+////                System.out.println("Got here");
+//            } catch (IOException e) {
+//                System.out.println(e.getCause());
+//                System.out.println(e.getMessage());
+//                e.printStackTrace();
+//            }
+//        }
+//    }
 
     //TODO write a function that checks email password combo for user in database
     //TODO populate class if email successfully logs in
@@ -132,7 +212,7 @@ public class MainActivity extends AppCompatActivity {
 //        //col 0 = firstname, col 1 = lastname, col 2 = Student #, col 3 = email, col 4 = type, col 5 = password
         int rows = sheet.getPhysicalNumberOfRows();
         for (int i = 1; i < rows; ++i){
-                //This long conditional is basically just checking if the email and password match on the particular row.
+            //This long conditional is basically just checking if the email and password match on the particular row.
             if(sheet.getRow(i).getCell(3).getStringCellValue().equals(email)){
                 if( sheet.getRow(i).getCell(5).getStringCellValue().equals(password)){
                     String type = sheet.getRow(i).getCell(4).getStringCellValue();
@@ -185,59 +265,85 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 //            reached the end of the database without finding a matching email.
-            return null;
+        return null;
 //        }
     }
 
     //On click of login button, will create database if needed, and then checks user login against it.
+//    public void onLoginClick(View view){
+//        createDB();
+//        // TODO change the logic below to really check if a user can have their login attempt authenticated
+//        // currently just checks if email == "admin@" && password == "password" -> authentication
+//        emailView.setText(emailView.getText().toString().trim());
+//
+//        // check if email has valid format
+//        if (!validateEmail(emailView.getText().toString())) {
+//            Toast.makeText(getApplicationContext(), "Invalid Email Format", Toast.LENGTH_SHORT).show(); // display error message
+//            return; // do not count this as an incorrect login attempt
+//        }
+//        ArrayList<String> userLogin = checkLogin(emailView.getText().toString(), passwordView.getText().toString());
+//        if (userLogin != null) {
+//            User user = new User();
+////            Note, the return order will always be email, fname, lname, type, idnum
+//            //this is basically just constructing the user class with the proper parameters.
+//            switch(userLogin.get(3)){
+//                case "STUDENT":
+//                    user = new User(userLogin.get(0), userLogin.get(1), userLogin.get(2), userType.STUDENT, userLogin.get(4));
+//                    break;
+//                case "PROFESSOR":
+//                    user = new User(userLogin.get(0), userLogin.get(1), userLogin.get(2), userType.PROFESSOR, userLogin.get(4));
+//                    break;
+//                case "TA":
+//                    user = new User(userLogin.get(0), userLogin.get(1), userLogin.get(2), userType.TA, userLogin.get(4));
+//                    break;
+//            }
+//
+//            Toast.makeText(getApplicationContext(), "Login Successful", Toast.LENGTH_SHORT).show(); // tell user that authentication complete
+//            //Take the professor to the professor page, and the student to the student page.
+//            if(user.type == userType.PROFESSOR){
+//                Intent intent = new Intent(com.example.loginscreen.MainActivity.this, createClassActivity.class);
+//                intent.putExtra(LOGIN_EXTRA, (Parcelable) user);
+//                startActivity(intent);
+//            }else{
+//                Intent intent = new Intent(com.example.loginscreen.MainActivity.this, enterRoomCode.class);
+//                intent.putExtra(LOGIN_EXTRA, (Parcelable) user);
+//                startActivity(intent);
+//            } //user is student
+//
+//        } else {
+//            Toast.makeText(getApplicationContext(), "Incorrect email or password", Toast.LENGTH_SHORT).show(); // display error message
+//            attemptsLeft--; // decrement counter of remaining attempts
+//            incorrectAttempts.setText(Integer.toString(attemptsLeft)); // display number of attempts remaining
+//            if (attemptsLeft == 0) {
+//                loginButton.setEnabled(false); // disable login button if user has entered attemptsLeft incorrect attempts
+//            }
+//        }
+//    }
+
     public void onLoginClick(View view){
-        createDB();
-        // TODO change the logic below to really check if a user can have their login attempt authenticated
-        // currently just checks if email == "admin@" && password == "password" -> authentication
-        emailView.setText(emailView.getText().toString().trim());
-
-        // check if email has valid format
-        if (!validateEmail(emailView.getText().toString())) {
-            Toast.makeText(getApplicationContext(), "Invalid Email Format", Toast.LENGTH_SHORT).show(); // display error message
-            return; // do not count this as an incorrect login attempt
-        }
-        ArrayList<String> userLogin = checkLogin(emailView.getText().toString(), passwordView.getText().toString());
-        if (userLogin != null) {
-            User user = new User();
-//            Note, the return order will always be email, fname, lname, type, idnum
-            //this is basically just constructing the user class with the proper parameters.
-            switch(userLogin.get(3)){
-                case "STUDENT":
-                    user = new User(userLogin.get(0), userLogin.get(1), userLogin.get(2), userType.STUDENT, userLogin.get(4));
-                    break;
-                case "PROFESSOR":
-                    user = new User(userLogin.get(0), userLogin.get(1), userLogin.get(2), userType.PROFESSOR, userLogin.get(4));
-                    break;
-                case "TA":
-                    user = new User(userLogin.get(0), userLogin.get(1), userLogin.get(2), userType.TA, userLogin.get(4));
-                    break;
-            }
-
-            Toast.makeText(getApplicationContext(), "Login Successful", Toast.LENGTH_SHORT).show(); // tell user that authentication complete
-            //Take the professor to the professor page, and the student to the student page.
-            if(user.type == userType.PROFESSOR){
-                Intent intent = new Intent(com.example.loginscreen.MainActivity.this, createClassActivity.class);
-                intent.putExtra(LOGIN_EXTRA, (Parcelable) user);
-                startActivity(intent);
-            }else{
-                Intent intent = new Intent(com.example.loginscreen.MainActivity.this, enterRoomCode.class);
-                intent.putExtra(LOGIN_EXTRA, (Parcelable) user);
-                startActivity(intent);
-            } //user is student
-
-        } else {
-            Toast.makeText(getApplicationContext(), "Incorrect email or password", Toast.LENGTH_SHORT).show(); // display error message
-            attemptsLeft--; // decrement counter of remaining attempts
-            incorrectAttempts.setText(Integer.toString(attemptsLeft)); // display number of attempts remaining
-            if (attemptsLeft == 0) {
-                loginButton.setEnabled(false); // disable login button if user has entered attemptsLeft incorrect attempts
-            }
-        }
+//        String email = emailView.getText().toString();
+//        String password = passwordView.getText().toString();
+        createVal("Hello!");
+//        mAuth.signInWithEmailAndPassword(email, password)
+//                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<AuthResult> task) {
+//                        if (task.isSuccessful()) {
+//                            // Sign in success, update UI with the signed-in user's information
+//                            Log.d("SIGNIN_SUCCESS", "signInWithEmail:success");
+//                            FirebaseUser user = mAuth.getCurrentUser();
+////                            updateUI(user);
+//                        } else {
+//                            // If sign in fails, display a message to the user.
+//                            Log.w("SIGNIN_FAILURE", "signInWithEmail:failure", task.getException());
+//                            Toast.makeText(getApplicationContext(), "Authentication failed.",
+//                                    Toast.LENGTH_SHORT).show();
+////                            updateUI(null);
+//                        }
+//
+//                        // ...
+//                    }
+//                });
     }
 
     //Close the app gracefully.
