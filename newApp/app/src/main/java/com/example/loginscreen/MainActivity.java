@@ -61,9 +61,8 @@ public class MainActivity extends AppCompatActivity {
     //    public User user = new User("Dummy@email.xyz", "Dummy", "User", userType.STUDENT, "00000000");
 //    public String email = user.email;
 //    public String password = "NULL";
-    FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference userRef = database.getReference("ProProct");
-
+    public FirebaseDatabase database = FirebaseDatabase.getInstance();
+    public DatabaseReference userRef = database.getReference("Proproct");
     private FirebaseAuth mAuth;
     int attemptsLeft = 5;
     public static final String LOGIN_EXTRA = "com.example.loginscreen.LOGIN_ENTRY";
@@ -94,9 +93,38 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void createVal(String entry){
-//        DatabaseReference dbRef = database.getReference(ref);
-        userRef.setValue(entry);
+    public void createNewUser(String username, String fName, String lName, String idNum, String type,
+                                     String status, String classID, String examID){
+        DatabaseReference usernameRef = userRef.child("Users").child(username);
+        usernameRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()){
+                    Toast.makeText(getApplicationContext(), "Registration Failed. User already exists.", Toast.LENGTH_SHORT).show();
+                }else{
+                    userRef.child("Users").child(username).child("fName").setValue(fName);
+                    userRef.child("Users").child(username).child("lName").setValue(lName);
+                    userRef.child("Users").child(username).child("type").setValue(type);
+                    userRef.child("Users").child(username).child("status").setValue(status);
+                    userRef.child("Users").child(username).child("email").setValue(idNum);
+                    userRef.child("Users").child(username).child("classID").setValue(classID);
+                    userRef.child("Users").child(username).child("examID").setValue(examID);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+//        if(userRef.child("Users").child(username){
+//        //entry already exists. Do nothing
+//        }else{
+//            System.out.println("Made it");
+//        }
+
+
+
     }
 
     public void readDBChange(){
@@ -106,9 +134,9 @@ public class MainActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
-                String value = dataSnapshot.getValue(String.class);
+                String value = dataSnapshot.child("fName").toString();
                 Log.d("VAL_READ_SUCCESS", "Value is: " + value);
-                emailView.setText(value);
+//                emailView.setText(value);
                 Toast.makeText(getApplicationContext(), "Test", Toast.LENGTH_SHORT).show();
             }
 
@@ -323,7 +351,7 @@ public class MainActivity extends AppCompatActivity {
     public void onLoginClick(View view){
 //        String email = emailView.getText().toString();
 //        String password = passwordView.getText().toString();
-        createVal("Hello!");
+        createNewUser("1234569", "TestUser", "This is definitely working", "Name", "65431", "STUDENT", "signed_in", "111111");
 //        mAuth.signInWithEmailAndPassword(email, password)
 //                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
 //                    @Override
