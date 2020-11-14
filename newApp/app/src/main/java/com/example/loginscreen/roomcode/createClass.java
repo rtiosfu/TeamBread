@@ -8,6 +8,7 @@
 
 package com.example.loginscreen.roomcode;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -20,22 +21,35 @@ import android.widget.Toast;
 
 import com.example.loginscreen.R;
 import com.example.loginscreen.roomcode.User.User;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.Random;
 
 //Screen that allows a professor to create a class
 //Providing a class name.
 public class createClass extends AppCompatActivity {
+
+    //setup a few variables.
+    TextView classTitle;
+    TextView classCode;
+    User user;
+    public FirebaseDatabase database = FirebaseDatabase.getInstance();
+    public DatabaseReference classRef = database.getReference("Proproct/Classes");
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_create_class2);
+        Intent intent = getIntent();
+        user = intent.getParcelableExtra(createClassActivity.CREATE_CLASS_EXTRA);
+        classTitle = (TextView)findViewById(R.id.examCreateRoomNameEntry);
+        classCode = (TextView)findViewById(R.id.examRoomGeneratedCode);
+    }
+
 
     //Generates and returns a random 10 digit code.
     public static int generateRandomDigits() {
@@ -43,125 +57,37 @@ public class createClass extends AppCompatActivity {
         return m + new Random().nextInt(9 * m);
     }
 
+    //returns true if the class was created, false otherwise.
+    public void createClassinDB(){
 
-    //Create the lookup.xls file if it does not already exist.
-    public void createLookup(){
-        try {
-            //open an output stream
-            FileOutputStream out = new FileOutputStream(lookup);
-            //setup the excel sheet
-            HSSFWorkbook wb = new HSSFWorkbook();
-            HSSFSheet s = wb.createSheet();
-            wb.setSheetName(0, "Sheet1");
-            int row = 0;
-            Row r = s.createRow(0);
-            String[] toInsert = {"id", "class", "professor"};
-            int col = 0;
-            //insert the fields into the spreadsheet.
-            for(Object field : toInsert) {
-                Cell cell = r.createCell(col);
-                col++;
-                if (field instanceof String) {
-                    cell.setCellValue((String) field);
-                }else if(field instanceof Integer){
-                    cell.setCellValue((Integer) field);
+        DatabaseReference classIDRef = classRef;
+        classIDRef.addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                int prospectiveCode = generateRandomDigits();
+                //Handle the (unlikely) case that the same ID is generated.
+                while(snapshot.hasChild(String.valueOf(prospectiveCode))){
+                    //This should only happen ~ 1 / 999999999 times, but this handles dupes.
+                    prospectiveCode = generateRandomDigits();
                 }
+
+                //TODO maybe add a creation date? So that it can be deleted after a certain time.
+                String code = String.valueOf(prospectiveCode);
+                classRef.child(code).child("Students").setValue("");
+                classRef.child(code).child("Owner").setValue(user.email);
+                classRef.child(code).child("Profname").setValue(user.username);
+                classRef.child(code).child("TAs").setValue("");
+                classRef.child(code).child("Title").setValue(classTitle.getText().toString().trim());
+                classCode.setText(code);
             }
-            wb.write(out);
-            out.close();
-        }catch(IOException e){
-            Toast.makeText(getApplicationContext(), "Error opening database. Please try again.", Toast.LENGTH_SHORT).show();
-            System.out.println(e.getCause());
-            System.out.println(e.getMessage());
-            e.printStackTrace();
-        }
 
-    }
-
-    //Return true if the code parameter is in the lookup file.
-    public boolean lookupCode(int search){
-        return false;
-    }
-
-
-    //write the created class to a separate excel file.
-    //the file will be contained in the class folder, naming convention classcode.xls
-    public void writeClassRegistry(String id, String cName, String profName){
-
-        //indexes 0 = id, 1 = class title, 2 = professor
-        File registry = new File(getExternalFilesDir(null) + "/classes/" + id + ".xls");
-        try{
-            //open file for output
-            FileOutputStream out = new FileOutputStream(registry);
-            //create the new excel spreadsheet
-            HSSFWorkbook wb = new HSSFWorkbook();
-            HSSFSheet s = wb.createSheet();
-            wb.setSheetName(0, "Sheet1");
-            int row = 0;
-            Row r = s.createRow(0);
-            //template for the top row
-            String[] toInsert = {"registered", "owner", "TA", "cname"};
-            int col = 0;
-            for(Object field : toInsert) {
-                Cell cell = r.createCell(col);
-                col++;
-                if (field instanceof String) {
-                    cell.setCellValue((String) field);
-                }else if(field instanceof Integer){
-                    cell.setCellValue((Integer) field);
-                }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(getApplicationContext(), "Database failure. Please try again.", Toast.LENGTH_SHORT).show();
             }
-            //add the prof email
-            r = s.createRow(1);
-            Cell cell = r.createCell(1);
-            cell.setCellValue(profName);
-            //add the class name
-            cell = r.createCell(3);
-            cell.setCellValue(cName);
-            wb.write(out);
-            out.close();
-            wb.close();
-    }catch(IOException e){
-        Toast.makeText(getApplicationContext(), "Error opening database. Please try again.", Toast.LENGTH_SHORT).show();
-        System.out.println(e.getCause());
-        System.out.println(e.getMessage());
-        e.printStackTrace();
-    }
+        });
 
-    }
-
-    //Isolated function to handle writing the class details to the lookup folder. Will call a separate function to create
-    //the class xls file.
-    //The parameter is the data that will be added to the first free row in the lookup file.
-    public void writeClassToDB(Object[] toInsert){
-        try {
-            //open the lookup file
-            FileInputStream in = new FileInputStream(lookup);
-            HSSFWorkbook workbook = new HSSFWorkbook(in);
-            HSSFSheet sheet = workbook.getSheetAt(0);
-            in.close();
-            int row = sheet.getLastRowNum();
-            Row r = sheet.createRow(row + 1);
-            int col = 0;
-            //insert each item in the list parameter.
-            for(Object field : toInsert) {
-                Cell cell = r.createCell(col);
-                col++;
-                if (field instanceof String) {
-                    cell.setCellValue((String) field);
-                }else if(field instanceof Integer){
-                    cell.setCellValue((Integer) field);
-                }
-            }
-            FileOutputStream out = new FileOutputStream(lookup);
-            workbook.write(out);
-            workbook.close();
-            writeClassRegistry(code.getText().toString(), classTitle.getText().toString(), user.email);
-        }catch(IOException e){
-            System.out.println(e.getCause());
-            System.out.println(e.getMessage());
-            e.printStackTrace();
-        }
     }
 
     //When the create button is clicked, a prompt will display to the user that confirms their intent to create a class.
@@ -177,13 +103,10 @@ public class createClass extends AppCompatActivity {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             //The user has clicked yes.
-                            int randCode = generateRandomDigits();
                             //set the TextView text to the random code.
-                            code.setText(Integer.toString(randCode));
                             //the array structure is [code, class title, prof email]
-                            Object[] toInsert = {randCode, classTitle.getText().toString(), user.email};
+                            createClassinDB();
                             Toast.makeText(getApplicationContext(), "Class has been created.", Toast.LENGTH_SHORT).show();
-                            writeClassToDB(toInsert);
                         }
                     });
             builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
@@ -198,22 +121,4 @@ public class createClass extends AppCompatActivity {
         }
     }
 
-    //setup a few variables.
-    File lookup;
-    TextView classTitle;
-    TextView code;
-    User user;
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_class2);
-        Intent intent = getIntent();
-        user = intent.getParcelableExtra(createClassActivity.CREATE_CLASS_EXTRA);
-        lookup = new File(getExternalFilesDir(null) + "/classes/lookup.xls");
-        classTitle = (TextView)findViewById(R.id.createExamRoomNameEntry);
-        code = (TextView)findViewById(R.id.createExamRoomGeneratedCode);
-        if(!lookup.exists()){
-            createLookup();
-        }
-    }
 }

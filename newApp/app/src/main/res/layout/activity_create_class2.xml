@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/createExamRoomNameEntry"
+        android:id="@+id/examCreateRoomNameEntry"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -40,17 +40,17 @@
         android:layout_marginTop="24dp"
         android:text="@string/createClassroomGeneratedCode"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/createExamRoomNameEntry" />
+        app:layout_constraintTop_toBottomOf="@+id/examCreateRoomNameEntry" />
 
     <TextView
-        android:id="@+id/createExamRoomGeneratedCode"
+        android:id="@+id/examRoomGeneratedCode"
         android:layout_width="182dp"
         android:layout_height="23dp"
         android:layout_marginStart="24dp"
         android:layout_marginLeft="24dp"
         android:layout_marginTop="24dp"
         app:layout_constraintStart_toEndOf="@+id/createExamRoomGeneratedCodeTitle"
-        app:layout_constraintTop_toBottomOf="@+id/createExamRoomNameEntry" />
+        app:layout_constraintTop_toBottomOf="@+id/examCreateRoomNameEntry" />
 
     <Button
         android:id="@+id/createExamRoomButton"
@@ -61,7 +61,7 @@
         android:layout_marginTop="24dp"
         android:onClick="onCreateClick"
         android:text="@string/createClassroomCreateButton"
-        app:layout_constraintStart_toEndOf="@+id/createExamRoomNameEntry"
+        app:layout_constraintStart_toEndOf="@+id/examCreateRoomNameEntry"
         app:layout_constraintTop_toBottomOf="@+id/createExamRoomTitle" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

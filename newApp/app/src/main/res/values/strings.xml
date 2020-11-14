@@ -44,7 +44,7 @@
     <string name="title_activity_create_room">createRoom</string>
     <string name="createClassroomTitleText">Create a Class</string>
     <string name="createClassroomNameEntryHint">Class Title</string>
-    <string name="createClassroomGeneratedCode">Generated code:</string>
+    <string name="createClassroomGeneratedCode">Your class code is:</string>
     <string name="createClassroomCreateButton">Create</string>
     <string name="createExamRoomTitle">Create an Exam</string>
     <string name="createExamRoomDateHint">Exam Date</string>

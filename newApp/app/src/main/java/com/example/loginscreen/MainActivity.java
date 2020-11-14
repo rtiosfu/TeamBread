@@ -75,25 +75,6 @@ public class MainActivity extends AppCompatActivity {
         //TODO maybe add an updateUI
     }
 
-//    public void readDBChange(){
-//        // Read from the database
-//        userRef.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                // This method is called once with the initial value and again
-//                // whenever data at this location is updated.
-//                String value = dataSnapshot.child("fName").toString();
-//                Log.d("VAL_READ_SUCCESS", "Value is: " + value);
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError error) {
-//                // Failed to read value
-//                Log.w("VAL_READ_FAIL", "Failed to read value.", error.toException());
-//            }
-//        });
-//    }
-
     //Attempts to login using the current email and password entered into the text fields.
     //Shows a toast on success or failure.
     public void attemptLogin(String email, String password) {
@@ -108,7 +89,6 @@ public class MainActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "Authentication Success",
                                     Toast.LENGTH_SHORT).show();
                             finishLogin(emailView.getText().toString().trim(), IDView.getText().toString().trim());
-//                            updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("LOGIN_FAIL", "signInWithEmail:failure", task.getException());
@@ -116,8 +96,6 @@ public class MainActivity extends AppCompatActivity {
                                     Toast.LENGTH_SHORT).show();
 
                         }
-
-                        // ...
                     }
                 });
     }
@@ -127,6 +105,7 @@ public class MainActivity extends AppCompatActivity {
         userRef.child("Users").child(idNum).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                //TODO add handling if ID number doesn't match.
 //                System.out.println(snapshot.child("fName").getValue());
                 String fName = Objects.requireNonNull(snapshot.child("fName").getValue()).toString();
                 String lName = Objects.requireNonNull(snapshot.child("lName").getValue()).toString();
@@ -136,9 +115,15 @@ public class MainActivity extends AppCompatActivity {
                 passwordView.setText("");
                 IDView.setText("");
                 //Start the roomcodeentry activity
-                Intent intent = new Intent(MainActivity.this, com.example.loginscreen.roomcode.enterRoomCode.class);
-                intent.putExtra(LOGIN_EXTRA, currentUser);
-                startActivity(intent);
+                if(currentUser.type == userType.STUDENT) {
+                    Intent intent = new Intent(MainActivity.this, com.example.loginscreen.roomcode.enterRoomCode.class);
+                    intent.putExtra(LOGIN_EXTRA, currentUser);
+                    startActivity(intent);
+                }else{
+                    Intent intent = new Intent(MainActivity.this, com.example.loginscreen.roomcode.createClassActivity.class);
+                    intent.putExtra(LOGIN_EXTRA, currentUser);
+                    startActivity(intent);
+                }
             }
 
             @Override

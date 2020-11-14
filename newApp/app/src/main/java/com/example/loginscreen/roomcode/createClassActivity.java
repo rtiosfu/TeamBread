@@ -12,7 +12,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.loginscreen.MainActivity;
 import com.example.loginscreen.R;
-import com.example.loginscreen.roomcode.*;
 import com.example.loginscreen.roomcode.User.User;
 
 import android.content.Intent;
@@ -51,7 +50,7 @@ public class createClassActivity extends AppCompatActivity {
     //This function will be called when the user clicks 'Create Exam'.
     //It will call the 'createRoom' activity and display that screen to the user.
     public void onCreateExamClick(View view){
-        Intent intent = new Intent(this, com.example.loginscreen.roomcode.createRoom.class);
+        Intent intent = new Intent(this, createExam.class);
         intent.putExtra(CREATE_EXAM_EXTRA, user);
         startActivity(intent);
     }
