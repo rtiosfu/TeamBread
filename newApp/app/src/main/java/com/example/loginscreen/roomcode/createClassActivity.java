@@ -54,4 +54,9 @@ public class createClassActivity extends AppCompatActivity {
         intent.putExtra(CREATE_EXAM_EXTRA, user);
         startActivity(intent);
     }
+
+    public void onCheckClassClick(View view){
+        Intent intent = new Intent(this, com.example.loginscreen.roomcode.ownedClassList.class);
+        startActivity(intent);
+    }
 }

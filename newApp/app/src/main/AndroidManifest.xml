@@ -16,20 +16,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.LoginScreen">
-        <activity android:name=".roomcode.pickDateTime"/>
+        <activity android:name=".roomcode.ownedClassList"></activity>
+        <activity android:name=".roomcode.pickDateTime" />
         <activity android:name=".roomcode.createClass" />
         <activity android:name=".roomcode.createExam" />
         <activity android:name=".roomcode.createClassActivity" />
-        <activity android:name=".signUpActivity"
-                  android:parentActivityName=".MainActivity">
-                    <meta-data
-                        android:name="android.support.PARENT_ACTIVITY"
-                        android:value=".MainActivity"/>
-        </activity>
-<!--        <activity-->
-<!--            android:name=".ui.login.signUpActivity"-->
-<!--            android:label="@string/title_activity_sign_up" />-->
-
+        <activity
+            android:name=".signUpActivity"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity> <!-- <activity -->
+        <!-- android:name=".ui.login.signUpActivity" -->
+        <!-- android:label="@string/title_activity_sign_up" /> -->
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.example.android.fileprovider"
