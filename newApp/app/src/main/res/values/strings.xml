@@ -57,4 +57,5 @@
     <string name="createExamRoomTime">Time: (24h HH:MM)</string>
     <string name="createExamRoomDayTitleText">Date: (YYYY/MM/DD)</string>
     <string name="mainIDEntryHint">Student ID Number</string>
+    <string name="classListCodeText">Code: %9d</string>
 </resources>

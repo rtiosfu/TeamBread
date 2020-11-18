@@ -1,6 +1,7 @@
 package com.example.loginscreen.roomcode;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +12,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.loginscreen.R;
+import com.example.loginscreen.roomcode.Room.Room;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +24,7 @@ import java.util.List;
 public class classAdapter extends RecyclerView.Adapter<classAdapter.ViewHolder> {
 
     //send a list of classes to be shown.
-    private ArrayList<String> classes;
+    private ArrayList<Room> classes;
     public FirebaseDatabase database = FirebaseDatabase.getInstance();
     public DatabaseReference userRef = database.getReference("Proproct/Classes");
     private OnItemClickListener listener;
@@ -33,7 +37,7 @@ public class classAdapter extends RecyclerView.Adapter<classAdapter.ViewHolder> 
         this.listener = listener;
     }
 
-    public classAdapter(ArrayList<String> c){
+    public classAdapter(ArrayList<Room> c){
         classes = c;
     }
 
@@ -51,10 +55,15 @@ public class classAdapter extends RecyclerView.Adapter<classAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        String className = classes.get(position);
+        Room className = classes.get(position);
 
-        TextView tView = holder.nameTextView;
-        tView.setText(className);
+
+
+        TextView nameView = holder.classNameView;
+        nameView.setText(className.roomName);
+        TextView codeView = holder.classCodeView;
+        codeView.setText("Code: " + className.roomCode);
+        
 
     }
 
@@ -66,11 +75,13 @@ public class classAdapter extends RecyclerView.Adapter<classAdapter.ViewHolder> 
     // Provide a direct reference to each of the views within a data item
     // Used to cache the views within the item layout for fast access
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView nameTextView;
+        public TextView classNameView;
+        public TextView classCodeView;
 
         public ViewHolder(final View itemView) {
             super(itemView);
-            nameTextView = (TextView) itemView.findViewById(R.id.classListItemText);
+            classNameView = itemView.findViewById(R.id.classListItemText);
+            classCodeView = itemView.findViewById(R.id.classListCodeText);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

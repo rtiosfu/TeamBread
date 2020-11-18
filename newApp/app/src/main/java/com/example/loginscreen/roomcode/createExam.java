@@ -47,7 +47,7 @@ public class createExam extends AppCompatActivity {
     TextView codeView;
     User user = null;
     public FirebaseDatabase database = FirebaseDatabase.getInstance();
-    public DatabaseReference examRef = database.getReference("Proproct/Exam");
+    public DatabaseReference examRef = database.getReference("Proproct/Exams");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -4,18 +4,29 @@
     android:id="@+id/classListItem"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?android:attr/selectableItemBackground">
-    android:orientation="horizontal"
+    android:background="?android:attr/selectableItemBackground"
+    android:orientation="vertical"
     android:paddingTop="10dp"
     android:paddingBottom="10dp">
 
     <TextView
         android:id="@+id/classListItemText"
         android:layout_width="match_parent"
-        android:layout_height="73dp"
+        android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="center_vertical"
         android:paddingLeft="10dp"
         android:text="TextView"
         android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/classListCodeText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:text="TextView"
+        android:textSize="18sp" />
+
 </LinearLayout>

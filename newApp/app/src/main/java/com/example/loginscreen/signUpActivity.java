@@ -144,8 +144,9 @@ public class signUpActivity extends AppCompatActivity {
                     userRef.child("Users").child(username).child("type").setValue(type);
                     userRef.child("Users").child(username).child("status").setValue(status);
                     userRef.child("Users").child(username).child("email").setValue(email);
-                    userRef.child("Users").child(username).child("classID").setValue(classID);
-                    userRef.child("Users").child(username).child("examID").setValue(examID);
+                    userRef.child("Users").child(username).child("classes").setValue("");
+                    userRef.child("Users").child(username).child("exams").setValue("");
+
                     Toast.makeText(getApplicationContext(), "Account Created. Please log in.", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -166,10 +167,6 @@ public class signUpActivity extends AppCompatActivity {
     //on user submit click.
     public void submitClick(View view){
         if(canSubmit()){
-            //create user class from the data in the text boxes.
-//            User user = new User(email.getText().toString().trim(), fname.getText().toString().trim(),
-//                                lname.getText().toString().trim(), retUserType(),
-//                                id.getText().toString().trim());
             //write user to database
             writeToDatabase();
             createAuthUser(email.getText().toString().trim(), pword.getText().toString());
