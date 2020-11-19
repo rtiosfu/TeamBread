@@ -90,7 +90,7 @@ public class enterRoomCode extends AppCompatActivity {
                 if(!(snapshot.child(path).hasChild(String.valueOf(code)))){
                     //add class to student and student to class
                     userInDB.child(path).child(codeS).setValue(roomSnap.child(codeS).child("Title").getValue());
-                    toReg.child(codeS).child("Students").push().setValue(user.email);
+                    toReg.child(codeS).child("Students").child(user.ID).setValue(user.email);
                     Toast.makeText(getApplicationContext(), "Registered.", Toast.LENGTH_SHORT).show();
                 }else{
                     Toast.makeText(getApplicationContext(), "You are already registered!", Toast.LENGTH_SHORT).show();

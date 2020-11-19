@@ -61,6 +61,7 @@ public class createClass extends AppCompatActivity {
     public void createClassinDB(){
 
         DatabaseReference classIDRef = classRef;
+        DatabaseReference userClassRef = database.getReference("Proproct/Users/" + user.ID + "/classes");
         classIDRef.addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override
@@ -79,6 +80,7 @@ public class createClass extends AppCompatActivity {
                 classRef.child(code).child("Profname").setValue(user.username);
                 classRef.child(code).child("TAs").setValue("");
                 classRef.child(code).child("Title").setValue(classTitle.getText().toString().trim());
+                userClassRef.child(code).setValue(classTitle.getText().toString().trim());
                 classCode.setText(code);
             }
 

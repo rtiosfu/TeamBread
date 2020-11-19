@@ -94,7 +94,6 @@ public class classAdapter extends RecyclerView.Adapter<classAdapter.ViewHolder> 
                     }
                 }
             });
-
         }
     }
 }

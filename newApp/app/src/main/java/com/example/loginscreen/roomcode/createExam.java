@@ -78,6 +78,7 @@ public class createExam extends AppCompatActivity {
 
     public void createExam() {
         DatabaseReference tempExamRef = examRef;
+        DatabaseReference userExamRef = database.getReference("Proproct/Users/" + user.ID + "/exams");
         tempExamRef.addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override
@@ -100,6 +101,7 @@ public class createExam extends AppCompatActivity {
                 examRef.child(code).child("dateYear").setValue(examYear.getText().toString());
                 examRef.child(code).child("dateMonth").setValue(examMonth.getText().toString());
                 examRef.child(code).child("dateDay").setValue(examDay.getText().toString());
+                userExamRef.child(code).setValue(examName.getText().toString().trim());
                 codeView.setText(code);
             }
 

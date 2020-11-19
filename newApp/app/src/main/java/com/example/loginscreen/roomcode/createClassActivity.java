@@ -24,6 +24,7 @@ import com.google.firebase.database.ValueEventListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -62,6 +63,8 @@ public class createClassActivity extends AppCompatActivity {
     }
 
 
+
+
     //This function will be called when the user clicks 'Create Exam'.
     //It will call the 'createRoom' activity and display that screen to the user.
     public void onCreateExamClick(View view){
@@ -76,9 +79,7 @@ public class createClassActivity extends AppCompatActivity {
         nClass.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                System.out.println(snapshot.child("153463776"));
                 for(DataSnapshot c : snapshot.getChildren()){
-//                    System.out.println(c.child("Owner"));
                     if(c.child("Owner").getValue().equals(user.email)){
                         owned.add(new Room(c.child("Title").getValue().toString(), c.getKey()));
                     }
@@ -93,7 +94,5 @@ public class createClassActivity extends AppCompatActivity {
 
             }
         });
-
-
     }
 }
