@@ -8,13 +8,23 @@
 
 package com.example.loginscreen.roomcode;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
+import android.os.Looper;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,6 +32,16 @@ import android.widget.Toast;
 import com.example.loginscreen.MainActivity;
 import com.example.loginscreen.R;
 import com.example.loginscreen.roomcode.User.User;
+import com.google.android.gms.common.api.ResolvableApiException;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResponse;
+import com.google.android.gms.location.SettingsClient;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -57,6 +77,7 @@ public class enterRoomCode extends AppCompatActivity {
     String uEmail = "Logged in as: ";
     User user;
     public static final String EXAM_STUDENT_CLASS_EXTRA = "com.example.loginscreen.roomcode.User.enterRoomCode.EXAM_STUDENT_CLASS";
+    private FusedLocationProviderClient fusedLocationClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +97,77 @@ public class enterRoomCode extends AppCompatActivity {
         examCode = findViewById(R.id.roomCodeEntry);
         classCode = findViewById(R.id.classCodeEntry);
         roomEntryClassName = findViewById(R.id.roomEntryClassName);
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+    }
+
+    // Register the permissions callback, which handles the user's response to the
+// system permissions dialog. Save the return value, an instance of
+// ActivityResultLauncher, as an instance variable.
+//    private ActivityResultLauncher<String> requestPermissionLauncher =
+//            registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), isGranted -> {
+//                if (isGranted) {
+//                    // Permission is granted. Continue the action or workflow in your
+//                    // app.
+//                } else {
+//                    // Explain to the user that the feature is unavailable because the
+//                    // features requires a permission that the user has denied. At the
+//                    // same time, respect the user's decision. Don't link to system
+//                    // settings in an effort to convince the user to change their
+//                    // decision.
+//                }
+//            });
+
+    public static boolean hasPermissions(Context context, String... permissions) {
+        if (context != null && permissions != null) {
+            for (String permission : permissions) {
+                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+
+    private void reqPerm(){
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            int PERMISSION_ALL = 1;
+            String[] PERMISSIONS = {
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+            };
+
+            if (!hasPermissions(this, PERMISSIONS)) {
+                ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
+            }
+//            return;
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    public void getLoc(View view) {
+        reqPerm();
+        fusedLocationClient.getLastLocation()
+                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        // Got last known location. In some rare situations this can be null.
+                        if (location != null) {
+                            System.out.println(location.getLatitude());
+                            System.out.println(location.getLongitude());
+                        }
+                        System.out.println("Here!@");
+                    }
+                });
+
+
     }
 
     //PARAMS: code is the class / exam code that the student has entered. roomSnap is a capture of the classes / exams

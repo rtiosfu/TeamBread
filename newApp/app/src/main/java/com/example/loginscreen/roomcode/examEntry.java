@@ -9,12 +9,16 @@
 package com.example.loginscreen.roomcode;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 
+import android.Manifest;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -26,6 +30,9 @@ import android.widget.Toast;
 
 import com.example.loginscreen.roomcode.enterRoomCode;
 import com.example.loginscreen.R;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,24 +42,19 @@ import java.util.Date;
 //Dummy pre-exam entry page. Will lead to an actual exam page and will involve photo checking in version 2.
 public class examEntry extends AppCompatActivity {
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exam_entry);
+
     }
 
     //Code to signal to mediastore that we wish to take an image.
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
-//    public void dispatchTakePictureIntent(View view){
-//        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//                       try {
-//                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-//                }catch(ActivityNotFoundException e){
-////                    test.setText("Activity not found exception.");
-//                }
-//
-//    }
+
 
     //sends the signal to take the photo with default camera app
     public void dispatchTakePictureIntent(View view) {

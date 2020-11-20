@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">loginScreen</string>
-    <string name="RoomCodeHint">Enter Room Code...</string>
-    <string name="classCodeHint">Enter Class Code...</string>
+    <string name="RoomCodeHint">Enter Exam... (By Code)</string>
+    <string name="classCodeHint">Register for a class... (By Code)</string>
     <string name="sendButtonText">Send</string>
     <string name="preExamScanRequest">Please submit a picture of your SFU ID to enter.</string>
     <string name="cameraButtonText">Camera</string>
@@ -58,4 +58,5 @@
     <string name="createExamRoomDayTitleText">Date: (YYYY/MM/DD)</string>
     <string name="mainIDEntryHint">Student ID Number</string>
     <string name="classListCodeText">Code: %9d</string>
+    <string name="roomEntryRegisterExamHint">Register for an exam... (By Code)</string>
 </resources>
