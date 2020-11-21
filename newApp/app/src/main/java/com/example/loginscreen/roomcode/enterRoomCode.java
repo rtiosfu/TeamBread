@@ -34,7 +34,9 @@ import com.example.loginscreen.R;
 import com.example.loginscreen.roomcode.User.User;
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResponse;
@@ -78,6 +80,7 @@ public class enterRoomCode extends AppCompatActivity {
     User user;
     public static final String EXAM_STUDENT_CLASS_EXTRA = "com.example.loginscreen.roomcode.User.enterRoomCode.EXAM_STUDENT_CLASS";
     private FusedLocationProviderClient fusedLocationClient;
+    Location currentLoc = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +101,22 @@ public class enterRoomCode extends AppCompatActivity {
         classCode = findViewById(R.id.classCodeEntry);
         roomEntryClassName = findViewById(R.id.roomEntryClassName);
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        createLocationRequest();
+
+        locationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                if (locationResult == null) {
+                    return;
+                }
+                for (Location location : locationResult.getLocations()) {
+                    currentLoc = location;
+                }
+            }
+        };
+
+        startLocationUpdates();
+
     }
 
     // Register the permissions callback, which handles the user's response to the
@@ -151,29 +170,61 @@ public class enterRoomCode extends AppCompatActivity {
         }
     }
 
+    private boolean requestingLocationUpdates = true;
+    private LocationCallback locationCallback;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (requestingLocationUpdates) {
+            startLocationUpdates();
+        }
+    }
+
+    private LocationRequest locationRequest;
+
+
+    protected void createLocationRequest() {
+
+        locationRequest = LocationRequest.create();
+        locationRequest.setInterval(2000);
+        locationRequest.setFastestInterval(1000);
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+    }
+
     @SuppressLint("MissingPermission")
-    public void getLoc(View view) {
+    private void startLocationUpdates() {
+
+        fusedLocationClient.requestLocationUpdates(locationRequest,
+                locationCallback,
+                Looper.getMainLooper());
+
+    }
+
+
+    @SuppressLint("MissingPermission")
+    public void getLoc() {
         reqPerm();
+//        startLocationUpdates();
         fusedLocationClient.getLastLocation()
                 .addOnSuccessListener(this, new OnSuccessListener<Location>() {
                     @Override
                     public void onSuccess(Location location) {
                         // Got last known location. In some rare situations this can be null.
                         if (location != null) {
-                            System.out.println(location.getLatitude());
-                            System.out.println(location.getLongitude());
+                            currentLoc = location;
                         }
-                        System.out.println("Here!@");
                     }
                 });
-
-
     }
 
     //PARAMS: code is the class / exam code that the student has entered. roomSnap is a capture of the classes / exams
     // toReg is a reference to the classes or exams
-    //path determines if we want to write to classes or exams.
+    //path determines if we want to write to classes or exams. (For the user)
     public void updateUser(int code, DataSnapshot roomSnap, DatabaseReference toReg, String path){
+//        startLocationUpdates();
+//        getLoc();
         DatabaseReference userInDB = database.getReference("Proproct/Users/" + user.ID);
         String codeS = String.valueOf(code);
         userInDB.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -182,7 +233,13 @@ public class enterRoomCode extends AppCompatActivity {
                 if(!(snapshot.child(path).hasChild(String.valueOf(code)))){
                     //add class to student and student to class
                     userInDB.child(path).child(codeS).setValue(roomSnap.child(codeS).child("Title").getValue());
-                    toReg.child(codeS).child("Students").child(user.ID).setValue(user.email);
+                    toReg.child(codeS).child("Students").child(user.ID).child("email").setValue(user.email);
+                    System.out.println(currentLoc.getLatitude());
+                    System.out.println(currentLoc.getLongitude());
+                    if(path.equals("exams") && currentLoc != null){
+                        toReg.child(codeS).child("Students").child(user.ID).child("locLong").setValue(currentLoc.getLongitude());
+                        toReg.child(codeS).child("Students").child(user.ID).child("locLat").setValue(currentLoc.getLatitude());
+                    }
                     Toast.makeText(getApplicationContext(), "Registered.", Toast.LENGTH_SHORT).show();
                 }else{
                     Toast.makeText(getApplicationContext(), "You are already registered!", Toast.LENGTH_SHORT).show();
@@ -241,7 +298,7 @@ public class enterRoomCode extends AppCompatActivity {
         }
     }
 
-    //Takes student to a sample entry exam page. Will be implemented further with exam code checking.
+    //Registers a student for an exam.
     public void sendExamCode(View view){
         int code = Integer.valueOf(examCode.getText().toString());
         String codeS = String.valueOf(code);
@@ -262,8 +319,8 @@ public class enterRoomCode extends AppCompatActivity {
                                         public void onClick(DialogInterface dialog, int which) {
                                             //register the student
                                             updateUser(code, snapshot, exams, "exams");
-                                            Intent intent = new Intent(com.example.loginscreen.roomcode.enterRoomCode.this, com.example.loginscreen.roomcode.examEntry.class);
-                                            startActivity(intent);
+//                                            Intent intent = new Intent(com.example.loginscreen.roomcode.enterRoomCode.this, com.example.loginscreen.roomcode.examEntry.class);
+//                                            startActivity(intent);
                                         }
                                     });
                             builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {

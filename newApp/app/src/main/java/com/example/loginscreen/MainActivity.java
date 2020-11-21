@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -21,6 +22,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.loginscreen.roomcode.User.*;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -65,6 +68,19 @@ public class MainActivity extends AppCompatActivity {
         incorrectAttempts = findViewById(R.id.incorrectAttempts);
         incorrectAttempts.setText(String.format(Locale.ENGLISH, "%d", attemptsLeft));
         IDView = findViewById(R.id.mainStudentID);
+
+        LocationCallback locationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                if (locationResult == null) {
+                    return;
+                }
+                for (Location location : locationResult.getLocations()) {
+//                    System.out.println(location.getLongitude());
+//                    System.out.println(location.getLatitude());
+                }
+            }
+        };
     }
 
     @Override
@@ -74,6 +90,9 @@ public class MainActivity extends AppCompatActivity {
 //        FirebaseUser currentUser = mAuth.getCurrentUser();
         //TODO maybe add an updateUI
     }
+
+
+
 
     //Attempts to login using the current email and password entered into the text fields.
     //Shows a toast on success or failure.
