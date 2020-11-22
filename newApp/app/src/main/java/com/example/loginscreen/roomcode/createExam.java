@@ -44,6 +44,7 @@ public class createExam extends AppCompatActivity {
     TextView examYear;
     TextView examMonth;
     TextView examDay;
+    TextView examLength;
     TextView codeView;
     User user = null;
     public FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -62,6 +63,7 @@ public class createExam extends AppCompatActivity {
         examMonth = findViewById(R.id.examCreateRoomDayMonth);
         examDay = findViewById(R.id.examCreateRoomDay);
         codeView = findViewById(R.id.examRoomGeneratedCode);
+        examLength = findViewById(R.id.createExamExamLength);
         Calendar calendar = Calendar.getInstance();
         //set each box to the current date and time.
         examYear.setText(Integer.toString(calendar.get(Calendar.YEAR)));
@@ -101,6 +103,7 @@ public class createExam extends AppCompatActivity {
                 examRef.child(code).child("dateYear").setValue(examYear.getText().toString());
                 examRef.child(code).child("dateMonth").setValue(examMonth.getText().toString());
                 examRef.child(code).child("dateDay").setValue(examDay.getText().toString());
+                examRef.child(code).child("length").setValue(examLength.getText().toString());
                 userExamRef.child(code).setValue(examName.getText().toString().trim());
                 codeView.setText(code);
             }

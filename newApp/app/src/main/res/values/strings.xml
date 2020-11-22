@@ -59,4 +59,5 @@
     <string name="mainIDEntryHint">Student ID Number</string>
     <string name="classListCodeText">Code: %9d</string>
     <string name="roomEntryRegisterExamHint">Register for an exam... (By Code)</string>
+    <string name="createExamLengthPromptText">Exam Length (In minutes, ex. 1 hour 30 minutes = 90 minutes)</string>
 </resources>

@@ -77,7 +77,7 @@
         android:layout_height="23dp"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="136dp"
         android:text="@string/createClassroomGeneratedCode"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/examCreateRoomDayMonth" />
@@ -86,9 +86,9 @@
         android:id="@+id/examRoomGeneratedCode"
         android:layout_width="182dp"
         android:layout_height="23dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="136dp"
         app:layout_constraintStart_toEndOf="@+id/createExamRoomGeneratedCodeTitle"
         app:layout_constraintTop_toBottomOf="@+id/examCreateRoomDayMonth" />
 
@@ -175,6 +175,31 @@
         android:text="@string/createExamRoomDayTitleText"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/examCreateRoomTimeHour" />
+
+    <TextView
+        android:id="@+id/createExamLengthPrompt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/createExamLengthPromptText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/examCreateRoomDayYear" />
+
+    <EditText
+        android:id="@+id/createExamExamLength"
+        android:layout_width="49dp"
+        android:layout_height="56dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="00"
+        android:textSize="32dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/createExamLengthPrompt" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

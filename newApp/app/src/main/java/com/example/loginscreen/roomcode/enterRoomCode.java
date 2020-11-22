@@ -59,6 +59,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.Locale;
 
 //TODO add way to check registered classes and exams, and then add a join button for exams.
@@ -283,12 +284,13 @@ public class enterRoomCode extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Invalid Code.", Toast.LENGTH_SHORT).show();
         }
     }
+
     //TODO add entry into exam, checking if they are registered.
     public void enterExam(View view){
         int code = Integer.valueOf(examEnterCode.getText().toString().trim());
         String codeS = String.valueOf(code);
         if(code > 100000000 && code < 999999999){
-            DatabaseReference exams = database.getReference("Proproct/Exams/" + codeS + "/Students/" + user.ID);
+            DatabaseReference exams = database.getReference("Proproct/Exams/" + codeS);
             DatabaseReference userRef = database.getReference("Proproct/Users/" + user.ID + "/exams");
             userRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -297,19 +299,30 @@ public class enterRoomCode extends AppCompatActivity {
                         exams.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot examSnapshot) {
-                                double regLat = (Double) examSnapshot.child("locLat").getValue();
-                                double regLong = (Double) examSnapshot.child("locLong").getValue();
-                                //TODO compare the current and last location.
-                                Location regLocation = new Location("");
-                                regLocation.setLatitude(regLat);
-                                regLocation.setLongitude(regLong);
-                                if(regLocation.distanceTo(currentLoc) <= 2000){
-                                    Intent intent = new Intent(com.example.loginscreen.roomcode.enterRoomCode.this, com.example.loginscreen.roomcode.examEntry.class);
-                                    intent.putExtra(EXAM_ENTRY_EXTRA, user);
-                                    startActivity(intent);
+                                int examDay = Integer.valueOf(examSnapshot.child("dateDay").getValue().toString());
+                                int examYear = Integer.valueOf(examSnapshot.child("dateYear").getValue().toString());
+                                int examMonth = Integer.valueOf(examSnapshot.child("dateMonth").getValue().toString());
+                                int examHour = Integer.valueOf(examSnapshot.child("startTimeHour").getValue().toString());
+                                int examMin = Integer.valueOf(examSnapshot.child("startTimeMin").getValue().toString());
+                                int examLength = Integer.valueOf(examSnapshot.child("length").getValue().toString());
+                                if (withinExamDate(examYear, examMonth, examDay, examHour, examMin, examLength)) {
+                                    double regLat = (Double) examSnapshot.child("Students").child(user.ID).child("locLat").getValue();
+                                    double regLong = (Double) examSnapshot.child("Students").child(user.ID).child("locLong").getValue();
+                                    //TODO compare the current and last location.
+                                    Location regLocation = new Location("");
+                                    regLocation.setLatitude(regLat);
+                                    regLocation.setLongitude(regLong);
+                                    if (regLocation.distanceTo(currentLoc) <= 2000) {
+                                        Intent intent = new Intent(com.example.loginscreen.roomcode.enterRoomCode.this, com.example.loginscreen.roomcode.examEntry.class);
+                                        intent.putExtra(EXAM_ENTRY_EXTRA, user);
+                                        startActivity(intent);
+                                    } else {
+                                        Toast.makeText(getApplicationContext(), "You are too far from registered location..", Toast.LENGTH_SHORT).show();
+                                    }
                                 }else{
-                                    Toast.makeText(getApplicationContext(), "You are too far from registered location..", Toast.LENGTH_SHORT).show();
+                                    //Do nothing, the toast is shown from the checking function.
                                 }
+
                             }
 
                             @Override
@@ -334,6 +347,38 @@ public class enterRoomCode extends AppCompatActivity {
 
     }
 
+    private boolean withinExamDate(int examYear, int examMonth, int examDay, int examTimeHour, int examTimeMin, int examLength){
+        Calendar calendar = Calendar.getInstance();
+        int currentYear = calendar.get(calendar.YEAR);
+        //Dates are stored internally starting from 0. Go figure.
+        int currentMonth = calendar.get(calendar.MONTH) + 1;
+        int currentDay = calendar.get(calendar.DAY_OF_MONTH);
+        int currentHour = calendar.get(calendar.HOUR_OF_DAY);
+        int currentMin = calendar.get(calendar.MINUTE);
+
+        System.out.println("EY = " + examYear + " EM " + examMonth + " ED " + examDay + " ETH " + examTimeHour + " ETM " + examTimeMin + " LEN " + examLength);
+        System.out.println("EY = " + currentYear + " EM " + currentMonth + " ED " + currentDay + " ETH " + currentHour + " ETM " + currentMin + " LEN " + examLength);
+
+        int examMin = (examTimeHour * 60) + examTimeMin;
+        int currMin = (currentHour * 60) + currentMin;
+
+        if(currentYear == examYear && currentMonth == examMonth && currentDay == examDay){
+            if(currMin < examMin - 30){
+                Toast.makeText(getApplicationContext(), "You are too early for the exam. Please come back within 30 minutes of the start time.", Toast.LENGTH_SHORT).show();
+                return false;
+            }else if(currMin > examMin + examLength){
+                Toast.makeText(getApplicationContext(), "The exam is over.", Toast.LENGTH_SHORT).show();
+                return false;
+            }else{
+                return true;
+            }
+        }else{
+            Toast.makeText(getApplicationContext(), "This is not the exam date.", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+    }
+
     //Registers a student for an exam.
     public void sendExamCode(View view){
         int code = Integer.valueOf(examRegCode.getText().toString().trim());
@@ -344,7 +389,7 @@ public class enterRoomCode extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         //the code is in the database
-                        if(snapshot.hasChild(codeS)){
+                        if (snapshot.hasChild(codeS)) {
                             AlertDialog.Builder builder = new AlertDialog.Builder(com.example.loginscreen.roomcode.enterRoomCode.this);
                             builder.setCancelable(true);
                             builder.setTitle("Are you sure?");
@@ -367,13 +412,15 @@ public class enterRoomCode extends AppCompatActivity {
                             });
                             AlertDialog dialog = builder.create();
                             dialog.show();
-                        }else{
+                        } else {
                             Toast.makeText(getApplicationContext(), "Invalid Code.", Toast.LENGTH_SHORT).show();
                         }
+
                     }
                     @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
+                    public void onCancelled (@NonNull DatabaseError error){
                     }
+
                 });
 
         }else{
