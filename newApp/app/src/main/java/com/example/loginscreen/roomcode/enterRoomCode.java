@@ -70,7 +70,8 @@ public class enterRoomCode extends AppCompatActivity {
     FirebaseDatabase database = FirebaseDatabase.getInstance();
 
     TextView classCode;
-    TextView examCode;
+    TextView examRegCode;
+    TextView examEnterCode;
     TextView emailView;
     TextView nameView;
     TextView typeView;
@@ -79,6 +80,7 @@ public class enterRoomCode extends AppCompatActivity {
     String uEmail = "Logged in as: ";
     User user;
     public static final String EXAM_STUDENT_CLASS_EXTRA = "com.example.loginscreen.roomcode.User.enterRoomCode.EXAM_STUDENT_CLASS";
+    public static final String EXAM_ENTRY_EXTRA = "com.example.loginscreen.roomcode.User.EXAM_ENTRY";
     private FusedLocationProviderClient fusedLocationClient;
     Location currentLoc = null;
 
@@ -97,7 +99,8 @@ public class enterRoomCode extends AppCompatActivity {
         nameView.setText("User name: " + user.username);
         typeView.setText("User type: " + user.type);
         idView.setText("User ID: " + String.valueOf(user.ID));
-        examCode = findViewById(R.id.roomCodeEntry);
+        examEnterCode = findViewById(R.id.roomCodeEntry);
+        examRegCode = findViewById(R.id.roomEntryRegisterExamCodeEntry);
         classCode = findViewById(R.id.classCodeEntry);
         roomEntryClassName = findViewById(R.id.roomEntryClassName);
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -118,23 +121,6 @@ public class enterRoomCode extends AppCompatActivity {
         startLocationUpdates();
 
     }
-
-    // Register the permissions callback, which handles the user's response to the
-// system permissions dialog. Save the return value, an instance of
-// ActivityResultLauncher, as an instance variable.
-//    private ActivityResultLauncher<String> requestPermissionLauncher =
-//            registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), isGranted -> {
-//                if (isGranted) {
-//                    // Permission is granted. Continue the action or workflow in your
-//                    // app.
-//                } else {
-//                    // Explain to the user that the feature is unavailable because the
-//                    // features requires a permission that the user has denied. At the
-//                    // same time, respect the user's decision. Don't link to system
-//                    // settings in an effort to convince the user to change their
-//                    // decision.
-//                }
-//            });
 
     public static boolean hasPermissions(Context context, String... permissions) {
         if (context != null && permissions != null) {
@@ -255,7 +241,7 @@ public class enterRoomCode extends AppCompatActivity {
     //implement a dialog asking if they wish to join, only if the code is already in the database.
     public void sendClassCode(View view) {
 //        int row = lookupCode(classCode.getText().toString());
-        int code = Integer.valueOf(classCode.getText().toString());
+        int code = Integer.valueOf(classCode.getText().toString().trim());
         String codeS = String.valueOf(code);
         if (code > 100000000 && code < 999999999) {
             DatabaseReference classes = database.getReference("Proproct/Classes");
@@ -297,10 +283,60 @@ public class enterRoomCode extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Invalid Code.", Toast.LENGTH_SHORT).show();
         }
     }
+    //TODO add entry into exam, checking if they are registered.
+    public void enterExam(View view){
+        int code = Integer.valueOf(examEnterCode.getText().toString().trim());
+        String codeS = String.valueOf(code);
+        if(code > 100000000 && code < 999999999){
+            DatabaseReference exams = database.getReference("Proproct/Exams/" + codeS + "/Students/" + user.ID);
+            DatabaseReference userRef = database.getReference("Proproct/Users/" + user.ID + "/exams");
+            userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if(snapshot.hasChild(codeS)){
+                        exams.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot examSnapshot) {
+                                double regLat = (Double) examSnapshot.child("locLat").getValue();
+                                double regLong = (Double) examSnapshot.child("locLong").getValue();
+                                //TODO compare the current and last location.
+                                Location regLocation = new Location("");
+                                regLocation.setLatitude(regLat);
+                                regLocation.setLongitude(regLong);
+                                if(regLocation.distanceTo(currentLoc) <= 2000){
+                                    Intent intent = new Intent(com.example.loginscreen.roomcode.enterRoomCode.this, com.example.loginscreen.roomcode.examEntry.class);
+                                    intent.putExtra(EXAM_ENTRY_EXTRA, user);
+                                    startActivity(intent);
+                                }else{
+                                    Toast.makeText(getApplicationContext(), "You are too far from registered location..", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+
+                    }else{
+                        Toast.makeText(getApplicationContext(), "You are not registered for this exam.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }else{
+            Toast.makeText(getApplicationContext(), "Invalid Code.", Toast.LENGTH_SHORT).show();
+        }
+
+    }
 
     //Registers a student for an exam.
     public void sendExamCode(View view){
-        int code = Integer.valueOf(examCode.getText().toString());
+        int code = Integer.valueOf(examRegCode.getText().toString().trim());
         String codeS = String.valueOf(code);
         if (code > 100000000 && code < 999999999) {
                 DatabaseReference exams = database.getReference("Proproct/Exams");
