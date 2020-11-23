@@ -67,7 +67,7 @@ public class createExam extends AppCompatActivity {
         Calendar calendar = Calendar.getInstance();
         //set each box to the current date and time.
         examYear.setText(Integer.toString(calendar.get(Calendar.YEAR)));
-        examMonth.setText(Integer.toString(calendar.get(Calendar.MONTH)));
+        examMonth.setText(Integer.toString(calendar.get(Calendar.MONTH) + 1));
         examDay.setText(Integer.toString(calendar.get(Calendar.DAY_OF_MONTH)));
         examTimeHour.setText(String.format(Locale.ENGLISH, "%02d", calendar.get(Calendar.HOUR_OF_DAY)));
         examTimeMin.setText(String.format(Locale.ENGLISH, "%02d", calendar.get(Calendar.MINUTE)));

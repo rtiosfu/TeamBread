@@ -83,6 +83,12 @@ public class examEntry extends AppCompatActivity {
 
     }
 
+    public void onSubmitClick(View view){
+        Intent intent = new Intent(this, com.example.loginscreen.roomcode.examRoomDisplay.class);
+        startActivity(intent);
+    }
+
+
     //Displays the last photo that the camera has taken on the screen.
     public void setImage(View view){
         File cardScanFile = new File(currentPhotoPath);
