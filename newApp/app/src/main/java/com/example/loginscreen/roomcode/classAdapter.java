@@ -1,3 +1,11 @@
+////////////////////////////////////////////
+//TEAM BREAD
+//classAdapter.Java
+//PROGRAMMERS: Ryan
+//KNOWN BUGS: None yet.
+//V2 CHANGES: None yet.
+////////////////////////////////////////////
+
 package com.example.loginscreen.roomcode;
 
 import android.content.Context;
@@ -21,6 +29,7 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 import java.util.List;
 
+//Adapter for the classview. Implementation taken from a tutorial.
 public class classAdapter extends RecyclerView.Adapter<classAdapter.ViewHolder> {
 
     //send a list of classes to be shown.

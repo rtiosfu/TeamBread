@@ -3,7 +3,7 @@
 //createClassActivity.java
 //PROGRAMMERS:Ryan
 //KNOWN BUGS: None yet.
-//V2 CHANGES: None yet.
+//V3 CHANGES: None yet.
 ////////////////////////////////////////////
 
 package com.example.loginscreen.roomcode;
@@ -44,6 +44,7 @@ public class createClassActivity extends AppCompatActivity {
     public static final String CREATE_EXAM_EXTRA = "com.example.loginscreen.roomcode.CREATE_EXAM_USER";
     public static final String CHECK_CLASS_EXTRA = "com.example.loginscreen.roomcode.CHECK_CLASS_USER";
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +74,7 @@ public class createClassActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+
     public void onCheckClassClick(View view){
         ArrayList<Room> owned = new ArrayList();
         DatabaseReference nClass = classes;
@@ -80,6 +82,7 @@ public class createClassActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot c : snapshot.getChildren()){
+                    //Check through all of the classes if the email matches the professors'. This will be changed.
                     if(c.child("Owner").getValue().equals(user.email)){
                         owned.add(new Room(c.child("Title").getValue().toString(), c.getKey()));
                     }

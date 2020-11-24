@@ -3,7 +3,7 @@
 //enterRoomCode.java
 //PROGRAMMERS:Ryan
 //KNOWN BUGS: None yet.
-//V2 CHANGES: None yet.
+//V3 CHANGES: None yet.
 ////////////////////////////////////////////
 
 package com.example.loginscreen.roomcode;
@@ -123,6 +123,7 @@ public class enterRoomCode extends AppCompatActivity {
 
     }
 
+    //Checks through a string of permissions to see if it is needed.
     public static boolean hasPermissions(Context context, String... permissions) {
         if (context != null && permissions != null) {
             for (String permission : permissions) {
@@ -135,6 +136,7 @@ public class enterRoomCode extends AppCompatActivity {
     }
 
 
+    //Requests location permissions if needed.
     private void reqPerm(){
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
@@ -160,6 +162,7 @@ public class enterRoomCode extends AppCompatActivity {
     private boolean requestingLocationUpdates = true;
     private LocationCallback locationCallback;
 
+    //Location updates helper method. restarts location update after stopping (if requested)
     @Override
     protected void onResume() {
         super.onResume();
@@ -171,6 +174,7 @@ public class enterRoomCode extends AppCompatActivity {
     private LocationRequest locationRequest;
 
 
+
     protected void createLocationRequest() {
 
         locationRequest = LocationRequest.create();
@@ -180,9 +184,10 @@ public class enterRoomCode extends AppCompatActivity {
 
     }
 
+    //Note: all missing permission suppressions are taken care of by the reqPerm() function.
     @SuppressLint("MissingPermission")
     private void startLocationUpdates() {
-
+        reqPerm();
         fusedLocationClient.requestLocationUpdates(locationRequest,
                 locationCallback,
                 Looper.getMainLooper());
@@ -190,6 +195,7 @@ public class enterRoomCode extends AppCompatActivity {
     }
 
 
+    //get current location.
     @SuppressLint("MissingPermission")
     public void getLoc() {
         reqPerm();
@@ -285,7 +291,8 @@ public class enterRoomCode extends AppCompatActivity {
         }
     }
 
-    //TODO add entry into exam, checking if they are registered.
+    //Allows the user to enter the exam they have entered the code for if it is within the exam date
+    //AND they are on the list (it is in their user class entry.)
     public void enterExam(View view){
         int code = Integer.valueOf(examEnterCode.getText().toString().trim());
         String codeS = String.valueOf(code);
@@ -347,6 +354,7 @@ public class enterRoomCode extends AppCompatActivity {
 
     }
 
+    //Checks if the current date and time is close enough to the provided exam dates.
     private boolean withinExamDate(int examYear, int examMonth, int examDay, int examTimeHour, int examTimeMin, int examLength){
         Calendar calendar = Calendar.getInstance();
         int currentYear = calendar.get(calendar.YEAR);
@@ -356,9 +364,10 @@ public class enterRoomCode extends AppCompatActivity {
         int currentHour = calendar.get(calendar.HOUR_OF_DAY);
         int currentMin = calendar.get(calendar.MINUTE);
 
-        System.out.println("EY = " + examYear + " EM " + examMonth + " ED " + examDay + " ETH " + examTimeHour + " ETM " + examTimeMin + " LEN " + examLength);
-        System.out.println("EY = " + currentYear + " EM " + currentMonth + " ED " + currentDay + " ETH " + currentHour + " ETM " + currentMin + " LEN " + examLength);
+//        System.out.println("EY = " + examYear + " EM " + examMonth + " ED " + examDay + " ETH " + examTimeHour + " ETM " + examTimeMin + " LEN " + examLength);
+//        System.out.println("EY = " + currentYear + " EM " + currentMonth + " ED " + currentDay + " ETH " + currentHour + " ETM " + currentMin + " LEN " + examLength);
 
+        //calculate minutes since the beginning of day.
         int examMin = (examTimeHour * 60) + examTimeMin;
         int currMin = (currentHour * 60) + currentMin;
 

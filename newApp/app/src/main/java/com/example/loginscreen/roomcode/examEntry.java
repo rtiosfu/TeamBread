@@ -3,7 +3,7 @@
 //examEntry.java
 //PROGRAMMERS:Ryan
 //KNOWN BUGS: Picture requires the submit button to be clicked before it is displayed.
-//V2 CHANGES: None yet.
+//V3 CHANGES: None yet.
 ////////////////////////////////////////////
 
 package com.example.loginscreen.roomcode;
