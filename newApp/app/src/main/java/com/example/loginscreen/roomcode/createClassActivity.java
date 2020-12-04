@@ -3,7 +3,6 @@
 //createClassActivity.java
 //PROGRAMMERS:Ryan
 //KNOWN BUGS: None yet.
-//V2 CHANGES: None yet.
 ////////////////////////////////////////////
 
 package com.example.loginscreen.roomcode;
@@ -45,6 +44,7 @@ public class createClassActivity extends AppCompatActivity {
     public static final String CHECK_CLASS_EXTRA = "com.example.loginscreen.roomcode.CHECK_CLASS_USER";
     public static final String CHECK_EXAM_EXTRA = "com.example.loginscreen.roomcode.CHECK_EXAM_USER";
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,13 +75,18 @@ public class createClassActivity extends AppCompatActivity {
     }
 
 
+<<<<<<< HEAD
     public void onCheckExamClick(View view){
+=======
+    public void onCheckClassClick(View view){
+>>>>>>> fe098b5d2cbf7e0935dbd6b3e2dee4fc90ea0623
         ArrayList<Room> owned = new ArrayList();
         DatabaseReference nClass = database.getReference("Proproct/Users/" + user.ID + "/exams");
         nClass.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot c : snapshot.getChildren()){
+<<<<<<< HEAD
                         owned.add(new Room(c.getValue().toString(), c.getKey()));
 
                 }
@@ -105,6 +110,12 @@ public class createClassActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot c : snapshot.getChildren()){
                     owned.add(new Room(c.getValue().toString(), c.getKey()));
+=======
+                    //Check through all of the classes if the email matches the professors'. This will be changed.
+                    if(c.child("Owner").getValue().equals(user.email)){
+                        owned.add(new Room(c.child("Title").getValue().toString(), c.getKey()));
+                    }
+>>>>>>> fe098b5d2cbf7e0935dbd6b3e2dee4fc90ea0623
                 }
 
                 Intent intent = new Intent(createClassActivity.this, com.example.loginscreen.roomcode.ownedClassList.class);

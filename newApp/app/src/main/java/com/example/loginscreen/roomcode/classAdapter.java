@@ -1,3 +1,11 @@
+////////////////////////////////////////////
+//TEAM BREAD
+//classAdapter.Java
+//PROGRAMMERS: Ryan
+//KNOWN BUGS: None yet.
+//V2 CHANGES: None yet.
+////////////////////////////////////////////
+
 package com.example.loginscreen.roomcode;
 
 import android.content.Context;
@@ -17,6 +25,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
+//Adapter for the classview. Implementation taken from a tutorial.
 public class classAdapter extends RecyclerView.Adapter<classAdapter.ViewHolder> {
 
     //send a list of classes to be shown.

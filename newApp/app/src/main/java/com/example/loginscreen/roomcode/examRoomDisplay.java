@@ -1,3 +1,11 @@
+////////////////////////////////////////////
+//TEAM BREAD
+//examRoomDisplay.Java
+//PROGRAMMERS: Ryan
+//KNOWN BUGS: This is basically a stub, and as such doesn't have any of the required functionality.
+//V3 CHANGES: None yet.
+////////////////////////////////////////////
+
 package com.example.loginscreen.roomcode;
 
 import androidx.appcompat.app.AppCompatActivity;

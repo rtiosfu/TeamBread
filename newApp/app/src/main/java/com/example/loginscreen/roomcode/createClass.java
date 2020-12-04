@@ -3,7 +3,7 @@
 //createClass.java
 //PROGRAMMERS:Ryan
 //KNOWN BUGS: Generated room code may be a duplicate. Drastically unlikely, but not guaranteed not to be.
-//V2 CHANGES: None yet.
+//V3 CHANGES: None yet.
 ////////////////////////////////////////////
 
 package com.example.loginscreen.roomcode;
@@ -57,13 +57,14 @@ public class createClass extends AppCompatActivity {
         return m + new Random().nextInt(9 * m);
     }
 
-    //returns true if the class was created, false otherwise.
+    //creates the class in firebase database.
     public void createClassinDB(){
 
         DatabaseReference classIDRef = classRef;
         DatabaseReference userClassRef = database.getReference("Proproct/Users/" + user.ID + "/classes");
         classIDRef.addListenerForSingleValueEvent(new ValueEventListener() {
 
+            //when the data changes.
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 int prospectiveCode = generateRandomDigits();
@@ -73,7 +74,7 @@ public class createClass extends AppCompatActivity {
                     prospectiveCode = generateRandomDigits();
                 }
 
-                //TODO maybe add a creation date? So that it can be deleted after a certain time.
+                //Actually write it in database.
                 String code = String.valueOf(prospectiveCode);
                 classRef.child(code).child("Students").setValue("");
                 classRef.child(code).child("Owner").setValue(user.email);
@@ -104,9 +105,7 @@ public class createClass extends AppCompatActivity {
                     new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            //The user has clicked yes.
-                            //set the TextView text to the random code.
-                            //the array structure is [code, class title, prof email]
+                            //Create the class in DB if the user clicks yes.
                             createClassinDB();
                             Toast.makeText(getApplicationContext(), "Class has been created.", Toast.LENGTH_SHORT).show();
                         }

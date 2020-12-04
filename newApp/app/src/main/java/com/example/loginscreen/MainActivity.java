@@ -3,7 +3,7 @@
 //MainActivity.Java
 //PROGRAMMERS:Ryan, Dylan
 //KNOWN BUGS:Textboxes to not reset after signing up.
-//V2 CHANGES: None yet.
+//V3 CHANGES: None yet.
 ////////////////////////////////////////////
 
 package com.example.loginscreen;

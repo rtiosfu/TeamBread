@@ -1,3 +1,11 @@
+////////////////////////////////////////////
+//TEAM BREAD
+//ownedClassList.Java
+//PROGRAMMERS:Ryan
+//KNOWN BUGS:Textboxes to not reset after signing up.
+//V3 CHANGES: None yet.
+////////////////////////////////////////////
+
 package com.example.loginscreen.roomcode;
 
 import androidx.annotation.NonNull;

@@ -3,7 +3,7 @@
 //createExam.java
 //PROGRAMMERS:Ryan
 //KNOWN BUGS: None
-//V2 CHANGES: None yet.
+//V3 CHANGES: None yet.
 ////////////////////////////////////////////
 
 package com.example.loginscreen.roomcode;
@@ -91,7 +91,7 @@ public class createExam extends AppCompatActivity {
                     //This should only happen ~ 1 / 999999999 times, but this handles dupes.
                     prospectiveCode = generateRandomDigits();
                 }
-                //TODO add ability to check if student belongs to the parent class.
+
                 String code = String.valueOf(prospectiveCode);
                 examRef.child(code).child("Students").setValue("");
                 examRef.child(code).child("Owner").setValue(user.email);
@@ -115,7 +115,7 @@ public class createExam extends AppCompatActivity {
         });
     }
 
-    //TODO Add connection to class instead. Probably through a selection page.
+    //When the professor clicks the create button.
     public void onCreateClick(View view) {
         if (legalCreate()) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
