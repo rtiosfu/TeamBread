@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">loginScreen</string>
+    <string name="app_name" translatable="false">loginScreen</string>
     <string name="RoomCodeHint">Enter Exam... (By Code)</string>
     <string name="classCodeHint">Register for a class... (By Code)</string>
     <string name="sendButtonText">Send</string>
@@ -16,15 +16,7 @@
     <string name="mainLoginButton">Login</string>
     <string name="mainCloseButton">Close</string>
     <string name="mainSignUpButton">Sign Up</string>
-    <string name="title_activity_sign_up">signUpActivity</string>
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password</string>
-    <string name="action_sign_in">Sign in or register</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="welcome">"Welcome !"</string>
-    <string name="invalid_username">Not a valid username</string>
-    <string name="invalid_password">Password must be >5 characters</string>
-    <string name="login_failed">"Login failed"</string>
+    <string name="title_activity_sign_up" translatable="false">signUpActivity</string>
     <string name="FirstNameHint">First Name</string>
     <string name="LastNameHint">Last Name</string>
     <string name="signUpCheckButtonText">Check</string>
@@ -37,11 +29,10 @@
     <string name="createClassButton">Create a Class</string>
     <string name="createExamButton">Create an Exam</string>
     <string name="createCheckExisting">Check your rooms</string>
-    <string name="title_activity_create_class">createClass</string>
+    <string name="title_activity_create_class" translatable="false">createClass</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
-    <string name="firstfragment">Hello</string>
-    <string name="title_activity_create_room">createRoom</string>
+    <string name="title_activity_create_room" translatable="false">createRoom</string>
     <string name="createClassroomTitleText">Create a Class</string>
     <string name="createClassroomNameEntryHint">Class Title</string>
     <string name="createClassroomGeneratedCode">Your class code is:</string>
@@ -53,11 +44,12 @@
     <string name="createExamRoomDateMonth">Mo.</string>
     <string name="createExamRoomDateDay">Day</string>
     <string name="createExamDateYear">Year</string>
-    <string name="createExamTimeHour">HH</string>
+    <string name="createExamTimeHour" translatable="false">HH</string>
     <string name="createExamRoomTime">Time: (24h HH:MM)</string>
     <string name="createExamRoomDayTitleText">Date: (YYYY/MM/DD)</string>
     <string name="mainIDEntryHint">Student ID Number</string>
-    <string name="classListCodeText">Code: %9d</string>
+    <string name="classListCodeText">Code: </string>
     <string name="roomEntryRegisterExamHint">Register for an exam... (By Code)</string>
     <string name="createExamLengthPromptText">Exam Length (In minutes, ex. 1 hour 30 minutes = 90 minutes)</string>
+    <string name="checkExamsButton">Check Your Exams</string>
 </resources>

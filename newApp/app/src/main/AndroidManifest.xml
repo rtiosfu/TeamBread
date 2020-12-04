@@ -21,6 +21,7 @@
         android:theme="@style/Theme.LoginScreen">
         <activity android:name=".roomcode.examRoomDisplay"></activity>
         <activity android:name=".roomcode.ownedClassList" />
+        <activity android:name=".roomcode.ownedExamList" />
         <activity android:name=".roomcode.pickDateTime" />
         <activity android:name=".roomcode.createClass" />
         <activity android:name=".roomcode.createExam" />

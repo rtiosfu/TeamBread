@@ -41,6 +41,9 @@ public class Room implements Parcelable {
         }
     };
 
+    public Room() {
+    }
+
     @Override
     public int describeContents() {
         return 0;

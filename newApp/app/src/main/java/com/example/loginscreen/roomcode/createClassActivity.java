@@ -43,6 +43,7 @@ public class createClassActivity extends AppCompatActivity {
     public static final String CREATE_CLASS_EXTRA = "com.example.loginscreen.roomcode.CREATE_CLASS_USER";
     public static final String CREATE_EXAM_EXTRA = "com.example.loginscreen.roomcode.CREATE_EXAM_USER";
     public static final String CHECK_CLASS_EXTRA = "com.example.loginscreen.roomcode.CHECK_CLASS_USER";
+    public static final String CHECK_EXAM_EXTRA = "com.example.loginscreen.roomcode.CHECK_EXAM_USER";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,17 +74,39 @@ public class createClassActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void onCheckClassClick(View view){
+
+    public void onCheckExamClick(View view){
         ArrayList<Room> owned = new ArrayList();
-        DatabaseReference nClass = classes;
+        DatabaseReference nClass = database.getReference("Proproct/Users/" + user.ID + "/exams");
         nClass.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot c : snapshot.getChildren()){
-                    if(c.child("Owner").getValue().equals(user.email)){
-                        owned.add(new Room(c.child("Title").getValue().toString(), c.getKey()));
-                    }
+                        owned.add(new Room(c.getValue().toString(), c.getKey()));
+
                 }
+                Intent intent = new Intent(createClassActivity.this, com.example.loginscreen.roomcode.ownedExamList.class);
+                intent.putParcelableArrayListExtra(CHECK_EXAM_EXTRA, owned);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    public void onCheckClassClick(View view){
+        ArrayList<Room> owned = new ArrayList();
+        DatabaseReference nExam = database.getReference("Proproct/Users/" + user.ID + "/classes");
+        nExam.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot c : snapshot.getChildren()){
+                    owned.add(new Room(c.getValue().toString(), c.getKey()));
+                }
+
                 Intent intent = new Intent(createClassActivity.this, com.example.loginscreen.roomcode.ownedClassList.class);
                 intent.putParcelableArrayListExtra(CHECK_CLASS_EXTRA, owned);
                 startActivity(intent);

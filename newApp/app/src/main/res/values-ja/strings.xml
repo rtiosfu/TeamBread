@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="RoomCodeHint">コドに入れてください</string>
+    <string name="sendButtonText">送る</string>
+    <string name="classCodeHint">クラスに届ける</string>
+    <string name="preExamScanRequest">SFU ID カードの写真に入れてください。</string>
+    <string name="cameraButtonText">カメラ</string>
+    <string name="cameraFileDirTitleText">写真：</string>
+    <string name="cameraSubmitText">入れる</string>
+    <string name="examEntryImageContentDesc">ID カードの写真</string>
+    <string name="mainLoginTextButtonText">LOGIN</string>
+    <string name="mainTitleText">プロプロッコト</string>
+    <string name="mainEmailTextHint">メール</string>
+    <string name="mainPasswordTextHint">パスワド</string>
+    <string name="mainAttemptsLeftText">トライ:</string>
+    <string name="mainLoginButton">LOGIN</string>
+    <string name="mainCloseButton">閉める</string>
+    <string name="mainSignUpButton">APPに届ける</string>
+    <string name="FirstNameHint">名前</string>
+    <string name="LastNameHint">苗字</string>
+    <string name="signUpCheckButtonText">ただす</string>
+    <string name="radioButtonStudent">学生</string>
+    <string name="radioButtonProfessor">先生</string>
+    <string name="signUpButtonTitle">私は。。。</string>
+    <string name="signUpStudentIDHint">学生の番号</string>
+    <string name="signUpSubmitButton">入れる</string>
+    <string name="createClassTitleText">こんにちは、先生！</string>
+    <string name="createClassButton">クラスをつくる</string>
+    <string name="createExamButton">試験を作る</string>
+    <string name="createCheckExisting">部屋をただす</string>
+    <string name="next">次</string>
+    <string name="previous">先</string>
+    <string name="createClassroomTitleText">クラスを作る</string>
+    <string name="createClassroomNameEntryHint">クラスの名前</string>
+    <string name="createClassroomGeneratedCode">このクラスのコードは：</string>
+    <string name="createClassroomCreateButton">作る</string>
+    <string name="createExamRoomTitle">試験を作る</string>
+    <string name="createExamRoomDateHint">試験の日付</string>
+    <string name="createExamRoomNameHint">試験の名前</string>
+    <string name="createExamRoomDatePrompt">デートと時間は選ってください</string>
+    <string name="createExamRoomDateMonth">月</string>
+    <string name="createExamRoomDateDay">曜日</string>
+    <string name="createExamDateYear">年</string>
+    <string name="createExamRoomTime">時間: (HH:MM)</string>
+    <string name="createExamRoomDayTitleText">デート: (YYYY/MM/DD)</string>
+    <string name="mainIDEntryHint">学生のIDの番号</string>
+    <string name="classListCodeText">コード</string>
+    <string name="roomEntryRegisterExamHint">試験が届ける</string>
+    <string name="createExamLengthPromptText">試験の年限 (分を入れてください ex. 一時間三十分 = 90)</string>
+    <string name="checkExamsButton">あなたの試験を見る</string>
+</resources>
