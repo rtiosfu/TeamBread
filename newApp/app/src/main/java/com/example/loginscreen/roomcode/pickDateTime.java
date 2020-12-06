@@ -32,6 +32,7 @@ public class pickDateTime extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pick_date_time);
         parentExamTimeHour = findViewById(R.id.pickHour);
@@ -52,6 +53,7 @@ public class pickDateTime extends AppCompatActivity {
                 parentExamTimeMin.setText(m);
             }
         });
+
         Calendar calendar = Calendar.getInstance();
         simpleDatePicker.init(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), new DatePicker.OnDateChangedListener() {
             @Override

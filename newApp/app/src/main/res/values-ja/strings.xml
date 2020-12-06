@@ -48,4 +48,6 @@
     <string name="roomEntryRegisterExamHint">試験が届ける</string>
     <string name="createExamLengthPromptText">試験の年限 (分を入れてください ex. 一時間三十分 = 90)</string>
     <string name="checkExamsButton">あなたの試験を見る</string>
+    <string name="examRoomStartTimePrompt">時間の始まる</string>
+    <string name="examRoomEndTime">時間の終わる</string>
 </resources>

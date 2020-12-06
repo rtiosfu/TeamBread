@@ -43,10 +43,13 @@ import java.util.Date;
 public class examEntry extends AppCompatActivity {
 
 
+    String code = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Intent intent = getIntent();
+        code = intent.getStringExtra(enterRoomCode.EXAM_ENTRY_CODE);
         setContentView(R.layout.activity_exam_entry);
 
     }
@@ -85,6 +88,7 @@ public class examEntry extends AppCompatActivity {
 
     public void onSubmitClick(View view){
         Intent intent = new Intent(this, com.example.loginscreen.roomcode.examRoomDisplay.class);
+        intent.putExtra(enterRoomCode.EXAM_ENTRY_CODE, code);
         startActivity(intent);
     }
 

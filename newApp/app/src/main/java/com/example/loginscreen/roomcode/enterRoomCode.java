@@ -82,6 +82,7 @@ public class enterRoomCode extends AppCompatActivity {
     User user;
     public static final String EXAM_STUDENT_CLASS_EXTRA = "com.example.loginscreen.roomcode.User.enterRoomCode.EXAM_STUDENT_CLASS";
     public static final String EXAM_ENTRY_EXTRA = "com.example.loginscreen.roomcode.User.EXAM_ENTRY";
+    public static final String EXAM_ENTRY_CODE = "com.example.loginscreen.roomcode.ROOM_CODE";
     private FusedLocationProviderClient fusedLocationClient;
     Location currentLoc = null;
 
@@ -322,6 +323,7 @@ public class enterRoomCode extends AppCompatActivity {
                                     if (regLocation.distanceTo(currentLoc) <= 2000) {
                                         Intent intent = new Intent(com.example.loginscreen.roomcode.enterRoomCode.this, com.example.loginscreen.roomcode.examEntry.class);
                                         intent.putExtra(EXAM_ENTRY_EXTRA, user);
+                                        intent.putExtra(EXAM_ENTRY_CODE, codeS);
                                         startActivity(intent);
                                     } else {
                                         Toast.makeText(getApplicationContext(), "You are too far from registered location..", Toast.LENGTH_SHORT).show();

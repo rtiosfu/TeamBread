@@ -52,4 +52,6 @@
     <string name="roomEntryRegisterExamHint">Register for an exam... (By Code)</string>
     <string name="createExamLengthPromptText">Exam Length (In minutes, ex. 1 hour 30 minutes = 90 minutes)</string>
     <string name="checkExamsButton">Check Your Exams</string>
+    <string name="examRoomStartTimePrompt">Start Time:</string>
+    <string name="examRoomEndTime">End Time:</string>
 </resources>

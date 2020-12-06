@@ -7,6 +7,28 @@
     tools:context=".roomcode.examRoomDisplay">
 
     <TextView
+        android:id="@+id/examRoomEndTimeView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="76dp"
+        android:layout_marginLeft="76dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/examRoomEndTime"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/examRoomStartTimeView" />
+
+    <TextView
+        android:id="@+id/examRoomEndTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="20dp"
+        android:text="00 : 00"
+        app:layout_constraintStart_toEndOf="@+id/examRoomStartTimeView"
+        app:layout_constraintTop_toBottomOf="@+id/examRoomStartTime" />
+
+    <TextView
         android:id="@+id/examRoomTimeRemaining"
         android:layout_width="255dp"
         android:layout_height="117dp"
@@ -16,4 +38,26 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/examRoomStartTimeView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="76dp"
+        android:layout_marginLeft="76dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/examRoomStartTimePrompt"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/examRoomTimeRemaining" />
+
+    <TextView
+        android:id="@+id/examRoomStartTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="20dp"
+        android:text="00 : 00"
+        app:layout_constraintStart_toEndOf="@+id/examRoomStartTimeView"
+        app:layout_constraintTop_toBottomOf="@+id/examRoomTimeRemaining" />
 </androidx.constraintlayout.widget.ConstraintLayout>
