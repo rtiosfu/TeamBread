@@ -132,7 +132,7 @@ public class signUpActivity extends AppCompatActivity {
     public void createNewUser(String username, String fName, String lName, String email, String type,
                               String status, String classID, String examID) {
         DatabaseReference usernameRef = userRef.child("Users").child(username);
-        usernameRef.addValueEventListener(new ValueEventListener() {
+        usernameRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
