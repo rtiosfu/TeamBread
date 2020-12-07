@@ -1,3 +1,11 @@
+////////////////////////////////////////////
+//TEAM BREAD
+//examClassAdapter.java
+//PROGRAMMERS:Ryan
+//KNOWN BUGS: None yet.
+//V3 CHANGES: None yet.
+////////////////////////////////////////////
+
 package com.example.loginscreen.roomcode;
 
 import android.content.Context;
@@ -23,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
+//Backend of the exam view, essentially tells the recyclerview how to convert the data into each item.
 public class examClassAdapter extends RecyclerView.Adapter<examClassAdapter.ViewHolder> {
 
     //send a list of classes to be shown.

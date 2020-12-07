@@ -2,7 +2,7 @@
 //TEAM BREAD
 //ownedClassList.Java
 //PROGRAMMERS:Ryan
-//KNOWN BUGS:Textboxes to not reset after signing up.
+//KNOWN BUGS: None yet.
 //V3 CHANGES: None yet.
 ////////////////////////////////////////////
 
@@ -29,6 +29,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class ownedClassList extends AppCompatActivity {
 
     public FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -50,6 +51,7 @@ public class ownedClassList extends AppCompatActivity {
 
         rvClasses = findViewById(R.id.ownedClassList);
         classAdapter adapter = new classAdapter(classes);
+        //basically a test implementation to see if we can catch which item was clicked.
         adapter.setOnItemClickListener(new classAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View itemView, int position) {

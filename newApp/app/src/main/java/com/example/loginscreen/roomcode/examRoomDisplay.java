@@ -2,8 +2,8 @@
 //TEAM BREAD
 //examRoomDisplay.Java
 //PROGRAMMERS: Ryan
-//KNOWN BUGS: This is basically a stub, and as such doesn't have any of the required functionality.
-//V3 CHANGES: None yet.
+//KNOWN BUGS: None yet.
+//V3 CHANGES: Created in V3.
 ////////////////////////////////////////////
 
 package com.example.loginscreen.roomcode;
@@ -30,6 +30,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
+//A display of the exam room once the student has entered. Has time remaining, start time, and end time.
 public class examRoomDisplay extends AppCompatActivity {
 
     private TextView timeRemainingView;
@@ -49,11 +50,6 @@ public class examRoomDisplay extends AppCompatActivity {
     TextView showEndTime;
 
 
-    private void getExamEndTime(){
-        //TODO get exam end time from database
-    }
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +63,7 @@ public class examRoomDisplay extends AppCompatActivity {
         String code = intent.getStringExtra(enterRoomCode.EXAM_ENTRY_CODE);
 //        System.out.println(code);
         DatabaseReference exams = database.getReference("Proproct/Exams/" + code);
+        //Get the end times from the database and calculate the remaining time accordingly.
         exams.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -79,11 +76,7 @@ public class examRoomDisplay extends AppCompatActivity {
                 showStartTime.setText(String.format("%d : %2d", endHour, endMin));
                 showEndTime.setText(String.format("%d : %2d", endTime / 60, endTime % 60));
 
-
-
-
                 Calendar calendar = Calendar.getInstance();
-
 
                 int currHour = calendar.get(Calendar.HOUR_OF_DAY);
                 int currMin = calendar.get(Calendar.MINUTE);
@@ -93,9 +86,6 @@ public class examRoomDisplay extends AppCompatActivity {
 
                 String diffHour = String.format(Locale.ENGLISH, "%02d", diff / 60);
                 diff = diff % 60;
-
-//        String currHourS = String.format(Locale.ENGLISH, "%02d", calendar.get(Calendar.HOUR_OF_DAY));
-//        String currMinS = String.format(Locale.ENGLISH, "%02d", calendar.get(Calendar.MINUTE));
                 timeRemainingView.setText(diffHour + ":" + diff);
             }
 
@@ -107,6 +97,7 @@ public class examRoomDisplay extends AppCompatActivity {
 
     }
 
+    //setting up receivers to update the timer every minute.
     @Override
     public void onStart(){
         super.onStart();
@@ -137,6 +128,7 @@ public class examRoomDisplay extends AppCompatActivity {
         registerReceiver(timeReceiver, new IntentFilter(Intent.ACTION_TIME_TICK));
     }
 
+    //deregister receiver once it is no longer needed.
     @Override
     public void onStop(){
         super.onStop();

@@ -3,7 +3,7 @@
 //createClassActivity.java
 //PROGRAMMERS:Ryan
 //KNOWN BUGS: None yet.
-//V2 CHANGES: None yet.
+//V3 CHANGES: Added check exams button.
 ////////////////////////////////////////////
 
 package com.example.loginscreen.roomcode;
@@ -29,8 +29,6 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 
-
-//TODO Add 'check exams' button
 //This screen is essentially a navigation screen that allows a professor user to
 //Create a class
 //Create an exam

@@ -1,3 +1,11 @@
+////////////////////////////////////////////
+//TEAM BREAD
+//ownedExamList.java
+//PROGRAMMERS:Ryan
+//KNOWN BUGS: None yet.
+//V3 CHANGES: None yet.
+////////////////////////////////////////////
+
 package com.example.loginscreen.roomcode;
 
 import android.content.Intent;
@@ -16,6 +24,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
+//basically almost exactly the same as ownedClassList.
 public class ownedExamList extends AppCompatActivity {
 
     public FirebaseDatabase database = FirebaseDatabase.getInstance();

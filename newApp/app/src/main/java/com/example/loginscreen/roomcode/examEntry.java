@@ -2,8 +2,8 @@
 //TEAM BREAD
 //examEntry.java
 //PROGRAMMERS:Ryan
-//KNOWN BUGS: Picture requires the submit button to be clicked before it is displayed.
-//V3 CHANGES: None yet.
+//KNOWN BUGS: No way to access picture that was taken.
+//V3 CHANGES: Submit button takes to exam page now.
 ////////////////////////////////////////////
 
 package com.example.loginscreen.roomcode;
@@ -86,6 +86,7 @@ public class examEntry extends AppCompatActivity {
 
     }
 
+    //opens the next page on submit click.
     public void onSubmitClick(View view){
         Intent intent = new Intent(this, com.example.loginscreen.roomcode.examRoomDisplay.class);
         intent.putExtra(enterRoomCode.EXAM_ENTRY_CODE, code);
