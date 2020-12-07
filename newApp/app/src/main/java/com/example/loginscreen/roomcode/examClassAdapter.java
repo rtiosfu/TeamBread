@@ -73,7 +73,7 @@ public class examClassAdapter extends RecyclerView.Adapter<examClassAdapter.View
                 int examDay =  Integer.parseInt(snapshot.child("dateDay").getValue().toString());
                 int examMonth = Integer.parseInt(snapshot.child("dateMonth").getValue().toString());
                 int examYear = Integer.parseInt(snapshot.child("dateYear").getValue().toString());
-                Date examDate = new Date(examYear - 1900, examMonth, examDay);
+                Date examDate = new Date(examYear - 1900, examMonth - 1, examDay);
                 String date = dateFormat.format(examDate);
                 dateView.setText(date);
 
